@@ -1,0 +1,10 @@
+{
+  "run_id": "example-1",
+  "input": {
+    "question": "Which Permian facilities show satellite-observed methane inconsistent with their RY2023 GHGRP reports?",
+    "region": "permian",
+    "year": 2023,
+    "max_plumes": 60
+  },
+  "options": { "sample_mode": true }
+}

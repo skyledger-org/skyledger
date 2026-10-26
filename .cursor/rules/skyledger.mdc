@@ -1,0 +1,16 @@
+---
+description: SkyLedger project rules for Cursor agents
+alwaysApply: true
+---
+
+# SkyLedger rules
+
+- TypeScript on Node 22, ESM, run with `tsx`. No build step. Keep runtime dependencies at zero beyond `tsx`.
+- Numbers (distances, unit conversions, ratios) come from SQL or code, never from a model reply.
+- Every agent step logs through `Tracer.log` with agent_name, action, input_summary, output_summary, target_agent, confidence, retry_count, status.
+- `SAMPLE_MODE=true` must keep working with no network and no credentials. Every live call (Zetaris, Meterless) needs a logged fallback.
+- Meterless calls go only through `app/adapters/meterless.ts` (headers `meterless-app`, `meterless-scope: user`; never log the token).
+- Zetaris calls go only through `app/adapters/zetaris.ts`, one SQL statement per call.
+- `vendor/` is third-party (Meterless, Apache-2.0): do not edit it.
+- Guarded language: "inconsistent with available data"; never fraud, violation or intent.
+- Never put secrets in code, logs or commits. `.env` is filled by the user.

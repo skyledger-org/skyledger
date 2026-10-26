@@ -1,0 +1,11 @@
+{
+  "run_id": "example-2",
+  "input": {
+    "question": "Check the three strongest candidate discrepancies before an analyst signs off.",
+    "region": "permian",
+    "year": 2023,
+    "plume_ids": ["tan20260905t191545c93s4001-Y", "tan20260309t184938c94s4001-B", "tan20260912t191539c78s4001-A"],
+    "max_plumes": 3
+  },
+  "options": { "sample_mode": true }
+}

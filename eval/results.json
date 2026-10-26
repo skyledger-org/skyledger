@@ -1,0 +1,15 @@
+{
+ "generated_at": "2026-10-26T00:45:51.581Z",
+ "plumes": 60,
+ "labelled": 0,
+ "ambiguous": 0,
+ "label_free": {
+  "nearest_blames_over_1km": 19,
+  "naive_discrepancy_flags": 34,
+  "skyledger_discrepancy_flags": 8
+ },
+ "baseline_a": null,
+ "baseline_b": null,
+ "skyledger": null,
+ "seconds": 0.5
+}

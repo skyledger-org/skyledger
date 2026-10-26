@@ -1,0 +1,31 @@
+{
+ "fetched_at": "2026-10-26T00:35:44.404Z",
+ "region": "Permian Basin (TX/NM)",
+ "bbox": {
+  "west": -104.5,
+  "south": 30.5,
+  "east": -101,
+  "north": 33.5
+ },
+ "ghgrp_year": 2023,
+ "counts": {
+  "cm_sources": 3413,
+  "cm_plumes": 60,
+  "facilities": 365,
+  "ch4_rows": 363
+ },
+ "sources": {
+  "carbon_mapper": {
+   "url": "https://api.carbonmapper.org/api/v1/catalog/sources.geojson?plume_gas=CH4&status=published&minpoints=1&eps=500&bbox=-104.5&bbox=30.5&bbox=-101&bbox=33.5",
+   "licence": "Carbon Mapper data terms (non-commercial use with attribution)"
+  },
+  "epa_ghgrp": {
+   "url": "https://data.epa.gov/efservice/PUB_DIM_FACILITY",
+   "licence": "US Government public data"
+  },
+  "sec_edgar": {
+   "url": "https://www.sec.gov/files/company_tickers.json",
+   "licence": "US Government public data"
+  }
+ }
+}

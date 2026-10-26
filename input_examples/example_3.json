@@ -1,0 +1,11 @@
+{
+  "run_id": "example-3",
+  "input": {
+    "question": "Trap set: plumes a nearest-facility match would pin on the wrong company.",
+    "region": "permian",
+    "year": 2023,
+    "plume_ids": ["ang20191019t153454-A", "tan20260825t185002c91s4001-R", "tan20260309t184938c94s4001-A", "tan20250709t181548c58s4001-L", "ang20191023t190429-3"],
+    "max_plumes": 5
+  },
+  "options": { "sample_mode": true }
+}

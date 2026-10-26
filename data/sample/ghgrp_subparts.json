@@ -1,0 +1,254 @@
+[
+ {
+  "subpart_id": 1,
+  "subpart_name": "C",
+  "subpart_category": "Stationary Combustion",
+  "subpart_type": "E"
+ },
+ {
+  "subpart_id": 2,
+  "subpart_name": "D",
+  "subpart_category": "Electricity Generation",
+  "subpart_type": "E"
+ },
+ {
+  "subpart_id": 3,
+  "subpart_name": "E",
+  "subpart_category": "Adipic Acid Production",
+  "subpart_type": "E"
+ },
+ {
+  "subpart_id": 4,
+  "subpart_name": "F",
+  "subpart_category": "Aluminum Production",
+  "subpart_type": "E"
+ },
+ {
+  "subpart_id": 5,
+  "subpart_name": "G",
+  "subpart_category": "Ammonia Manufacturing",
+  "subpart_type": "E"
+ },
+ {
+  "subpart_id": 6,
+  "subpart_name": "H",
+  "subpart_category": "Cement Production",
+  "subpart_type": "E"
+ },
+ {
+  "subpart_id": 9,
+  "subpart_name": "K",
+  "subpart_category": "Ferroalloy Production",
+  "subpart_type": "E"
+ },
+ {
+  "subpart_id": 12,
+  "subpart_name": "N",
+  "subpart_category": "Glass Production",
+  "subpart_type": "E"
+ },
+ {
+  "subpart_id": 13,
+  "subpart_name": "O",
+  "subpart_category": "HCFC–22 Production and HFC–23 Destruction",
+  "subpart_type": "E"
+ },
+ {
+  "subpart_id": 14,
+  "subpart_name": "P",
+  "subpart_category": "Hydrogen Production",
+  "subpart_type": "E"
+ },
+ {
+  "subpart_id": 15,
+  "subpart_name": "Q",
+  "subpart_category": "Iron and Steel Production",
+  "subpart_type": "E"
+ },
+ {
+  "subpart_id": 16,
+  "subpart_name": "R",
+  "subpart_category": "Lead Production",
+  "subpart_type": "E"
+ },
+ {
+  "subpart_id": 17,
+  "subpart_name": "S",
+  "subpart_category": "Lime Production",
+  "subpart_type": "E"
+ },
+ {
+  "subpart_id": 19,
+  "subpart_name": "V",
+  "subpart_category": "Nitric Acid Production",
+  "subpart_type": "E"
+ },
+ {
+  "subpart_id": 21,
+  "subpart_name": "X",
+  "subpart_category": "Petrochemical Production",
+  "subpart_type": "E"
+ },
+ {
+  "subpart_id": 22,
+  "subpart_name": "Y",
+  "subpart_category": "Petroleum Refining",
+  "subpart_type": "E"
+ },
+ {
+  "subpart_id": 23,
+  "subpart_name": "Z",
+  "subpart_category": "Phosphoric Acid Production",
+  "subpart_type": "E"
+ },
+ {
+  "subpart_id": 24,
+  "subpart_name": "AA",
+  "subpart_category": "Pulp and Paper Manufacturing",
+  "subpart_type": "E"
+ },
+ {
+  "subpart_id": 25,
+  "subpart_name": "BB",
+  "subpart_category": "Silicon Carbide Production",
+  "subpart_type": "E"
+ },
+ {
+  "subpart_id": 26,
+  "subpart_name": "CC",
+  "subpart_category": "Soda Ash Manufacturing",
+  "subpart_type": "E"
+ },
+ {
+  "subpart_id": 28,
+  "subpart_name": "EE",
+  "subpart_category": "Titanium Dioxide Production",
+  "subpart_type": "E"
+ },
+ {
+  "subpart_id": 30,
+  "subpart_name": "GG",
+  "subpart_category": "Zinc Production",
+  "subpart_type": "E"
+ },
+ {
+  "subpart_id": 31,
+  "subpart_name": "HH",
+  "subpart_category": "Municipal Landfills",
+  "subpart_type": "E"
+ },
+ {
+  "subpart_id": 35,
+  "subpart_name": "LL",
+  "subpart_category": "Coal-based Liquid Fuel Supply",
+  "subpart_type": "S"
+ },
+ {
+  "subpart_id": 36,
+  "subpart_name": "MM",
+  "subpart_category": "Petroleum Product Supply",
+  "subpart_type": "S"
+ },
+ {
+  "subpart_id": 37,
+  "subpart_name": "NN",
+  "subpart_category": "Natural Gas and Natural Gas Liquid Supply",
+  "subpart_type": "S"
+ },
+ {
+  "subpart_id": 38,
+  "subpart_name": "OO",
+  "subpart_category": "Non-CO<sub>2</sub> Industrial Gas Supply",
+  "subpart_type": "S"
+ },
+ {
+  "subpart_id": 39,
+  "subpart_name": "PP",
+  "subpart_category": "Carbon Dioxide (CO<sub>2</sub>) Supply",
+  "subpart_type": "S"
+ },
+ {
+  "subpart_id": 41,
+  "subpart_name": "U",
+  "subpart_category": "Miscellaneous Uses of Carbonate",
+  "subpart_type": "E"
+ },
+ {
+  "subpart_id": 42,
+  "subpart_name": "C (Abbr)",
+  "subpart_category": "Stationary Combustion",
+  "subpart_type": "E"
+ },
+ {
+  "subpart_id": 43,
+  "subpart_name": "I",
+  "subpart_category": "Electronics Manufacture",
+  "subpart_type": "E"
+ },
+ {
+  "subpart_id": 44,
+  "subpart_name": "L",
+  "subpart_category": "Fluorinated GHG Production",
+  "subpart_type": "E"
+ },
+ {
+  "subpart_id": 45,
+  "subpart_name": "T",
+  "subpart_category": "Magnesium Production",
+  "subpart_type": "E"
+ },
+ {
+  "subpart_id": 46,
+  "subpart_name": "W",
+  "subpart_category": "Petroleum and Natural Gas Systems",
+  "subpart_type": "E"
+ },
+ {
+  "subpart_id": 47,
+  "subpart_name": "DD",
+  "subpart_category": "SF6 from Electrical Equipment",
+  "subpart_type": "E"
+ },
+ {
+  "subpart_id": 48,
+  "subpart_name": "FF",
+  "subpart_category": "Underground Coal Mines",
+  "subpart_type": "E"
+ },
+ {
+  "subpart_id": 49,
+  "subpart_name": "II",
+  "subpart_category": "Industrial Wastewater Treatment",
+  "subpart_type": "E"
+ },
+ {
+  "subpart_id": 50,
+  "subpart_name": "QQ",
+  "subpart_category": "Import and Exports of Equipment with Fluorinated GHGs",
+  "subpart_type": "S"
+ },
+ {
+  "subpart_id": 51,
+  "subpart_name": "RR",
+  "subpart_category": "Geologic Sequestration of Carbon Dioxide",
+  "subpart_type": "I"
+ },
+ {
+  "subpart_id": 52,
+  "subpart_name": "SS",
+  "subpart_category": "Manufacture of Electric Transmission and Distribution Equipment",
+  "subpart_type": "E"
+ },
+ {
+  "subpart_id": 53,
+  "subpart_name": "TT",
+  "subpart_category": "Industrial Waste Landfills",
+  "subpart_type": "E"
+ },
+ {
+  "subpart_id": 54,
+  "subpart_name": "UU",
+  "subpart_category": "Injection of Carbon Dioxide",
+  "subpart_type": "I"
+ }
+]

@@ -1,0 +1,2180 @@
+[
+ {
+  "facility_id": 1000419,
+  "year": 2023,
+  "subpart": "D",
+  "ch4_co2e_t": 33.5
+ },
+ {
+  "facility_id": 1000470,
+  "year": 2023,
+  "subpart": "D",
+  "ch4_co2e_t": 236.25
+ },
+ {
+  "facility_id": 1000481,
+  "year": 2023,
+  "subpart": "D",
+  "ch4_co2e_t": 509.25
+ },
+ {
+  "facility_id": 1000604,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 7.75
+ },
+ {
+  "facility_id": 1000753,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 80.25
+ },
+ {
+  "facility_id": 1000753,
+  "year": 2023,
+  "subpart": "D",
+  "ch4_co2e_t": 128.5
+ },
+ {
+  "facility_id": 1000755,
+  "year": 2023,
+  "subpart": "D",
+  "ch4_co2e_t": 401.5
+ },
+ {
+  "facility_id": 1001132,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 37.75
+ },
+ {
+  "facility_id": 1001132,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 24577.25
+ },
+ {
+  "facility_id": 1001305,
+  "year": 2023,
+  "subpart": "D",
+  "ch4_co2e_t": 413.75
+ },
+ {
+  "facility_id": 1001365,
+  "year": 2023,
+  "subpart": "D",
+  "ch4_co2e_t": 1198.75
+ },
+ {
+  "facility_id": 1001638,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 72.32445775
+ },
+ {
+  "facility_id": 1001638,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 8326.1743612148
+ },
+ {
+  "facility_id": 1001806,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 193.25
+ },
+ {
+  "facility_id": 1001806,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 2529.75
+ },
+ {
+  "facility_id": 1001982,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 15
+ },
+ {
+  "facility_id": 1001982,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 5539.25
+ },
+ {
+  "facility_id": 1001990,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 16.75
+ },
+ {
+  "facility_id": 1001990,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 10587.5
+ },
+ {
+  "facility_id": 1002118,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 21.5
+ },
+ {
+  "facility_id": 1002118,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 3340
+ },
+ {
+  "facility_id": 1002325,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 56.75
+ },
+ {
+  "facility_id": 1002325,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 39846.25
+ },
+ {
+  "facility_id": 1002326,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 0.25
+ },
+ {
+  "facility_id": 1002326,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 660.5
+ },
+ {
+  "facility_id": 1002422,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 24
+ },
+ {
+  "facility_id": 1002422,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 2951.25
+ },
+ {
+  "facility_id": 1002447,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 9.75
+ },
+ {
+  "facility_id": 1002447,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 251.75
+ },
+ {
+  "facility_id": 1002451,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 21.75
+ },
+ {
+  "facility_id": 1002451,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 59.75
+ },
+ {
+  "facility_id": 1002509,
+  "year": 2023,
+  "subpart": "HH",
+  "ch4_co2e_t": 143487.5
+ },
+ {
+  "facility_id": 1002515,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 37
+ },
+ {
+  "facility_id": 1002515,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 2532.25
+ },
+ {
+  "facility_id": 1002538,
+  "year": 2023,
+  "subpart": "HH",
+  "ch4_co2e_t": 134071.25
+ },
+ {
+  "facility_id": 1002625,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 27.25
+ },
+ {
+  "facility_id": 1002625,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 1039.75
+ },
+ {
+  "facility_id": 1002629,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 63.25
+ },
+ {
+  "facility_id": 1002629,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 374.75
+ },
+ {
+  "facility_id": 1002630,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 11
+ },
+ {
+  "facility_id": 1002630,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 114
+ },
+ {
+  "facility_id": 1002668,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 18.5
+ },
+ {
+  "facility_id": 1002668,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 1535
+ },
+ {
+  "facility_id": 1002735,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 8.5
+ },
+ {
+  "facility_id": 1002868,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 15.25
+ },
+ {
+  "facility_id": 1002868,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 758
+ },
+ {
+  "facility_id": 1003250,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 7.25
+ },
+ {
+  "facility_id": 1003250,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 5619.5
+ },
+ {
+  "facility_id": 1003346,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 16.096224125
+ },
+ {
+  "facility_id": 1003346,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 2679.0459609088
+ },
+ {
+  "facility_id": 1003682,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 17.25
+ },
+ {
+  "facility_id": 1003682,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 2906.5
+ },
+ {
+  "facility_id": 1003767,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 25.981905375
+ },
+ {
+  "facility_id": 1003767,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 7928.2039725467
+ },
+ {
+  "facility_id": 1004248,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 9
+ },
+ {
+  "facility_id": 1004248,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 1792.5
+ },
+ {
+  "facility_id": 1004301,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 2
+ },
+ {
+  "facility_id": 1004301,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 1075.75
+ },
+ {
+  "facility_id": 1004893,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 30.2513365
+ },
+ {
+  "facility_id": 1004893,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 3061.7699863711
+ },
+ {
+  "facility_id": 1005181,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 32.5
+ },
+ {
+  "facility_id": 1005181,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 67952.75
+ },
+ {
+  "facility_id": 1005215,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 24.25
+ },
+ {
+  "facility_id": 1005215,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 22636.5
+ },
+ {
+  "facility_id": 1005641,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 75.5
+ },
+ {
+  "facility_id": 1005641,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 711.75
+ },
+ {
+  "facility_id": 1005691,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 31.5
+ },
+ {
+  "facility_id": 1005691,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 592.25
+ },
+ {
+  "facility_id": 1005815,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 25.5
+ },
+ {
+  "facility_id": 1005815,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 1706.25
+ },
+ {
+  "facility_id": 1005858,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 27.75
+ },
+ {
+  "facility_id": 1005858,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 20542.5
+ },
+ {
+  "facility_id": 1005897,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 17.5
+ },
+ {
+  "facility_id": 1005897,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 7457.75
+ },
+ {
+  "facility_id": 1006317,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 9
+ },
+ {
+  "facility_id": 1006317,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 5638
+ },
+ {
+  "facility_id": 1006363,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 3.25
+ },
+ {
+  "facility_id": 1006363,
+  "year": 2023,
+  "subpart": "H",
+  "ch4_co2e_t": 52.25
+ },
+ {
+  "facility_id": 1006392,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 25.0556779
+ },
+ {
+  "facility_id": 1006392,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 7402.0089095863
+ },
+ {
+  "facility_id": 1006800,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 111
+ },
+ {
+  "facility_id": 1006800,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 769.5
+ },
+ {
+  "facility_id": 1006819,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 19.75
+ },
+ {
+  "facility_id": 1006961,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 617.25
+ },
+ {
+  "facility_id": 1006961,
+  "year": 2023,
+  "subpart": "Y",
+  "ch4_co2e_t": 6118.75
+ },
+ {
+  "facility_id": 1006961,
+  "year": 2023,
+  "subpart": "TT",
+  "ch4_co2e_t": 1278.75
+ },
+ {
+  "facility_id": 1007104,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 3.75
+ },
+ {
+  "facility_id": 1007104,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 218.5
+ },
+ {
+  "facility_id": 1007155,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 114
+ },
+ {
+  "facility_id": 1007328,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 1.25
+ },
+ {
+  "facility_id": 1007328,
+  "year": 2023,
+  "subpart": "D",
+  "ch4_co2e_t": 740
+ },
+ {
+  "facility_id": 1007441,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 36.2618069
+ },
+ {
+  "facility_id": 1007441,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 2136.0379254015
+ },
+ {
+  "facility_id": 1007476,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 200843
+ },
+ {
+  "facility_id": 1007479,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 1609923.5
+ },
+ {
+  "facility_id": 1007482,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 394906
+ },
+ {
+  "facility_id": 1007537,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 17.75
+ },
+ {
+  "facility_id": 1007537,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 4154.75
+ },
+ {
+  "facility_id": 1007771,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 60.5
+ },
+ {
+  "facility_id": 1007771,
+  "year": 2023,
+  "subpart": "Y",
+  "ch4_co2e_t": 754
+ },
+ {
+  "facility_id": 1007773,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 8.5
+ },
+ {
+  "facility_id": 1007779,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 10.25
+ },
+ {
+  "facility_id": 1007779,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 2119
+ },
+ {
+  "facility_id": 1007972,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 381.25
+ },
+ {
+  "facility_id": 1007972,
+  "year": 2023,
+  "subpart": "Y",
+  "ch4_co2e_t": 4924
+ },
+ {
+  "facility_id": 1008141,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 322832.25
+ },
+ {
+  "facility_id": 1008217,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 13
+ },
+ {
+  "facility_id": 1008217,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 1642
+ },
+ {
+  "facility_id": 1008240,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 17
+ },
+ {
+  "facility_id": 1008240,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 39815.5
+ },
+ {
+  "facility_id": 1008248,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 7079.5
+ },
+ {
+  "facility_id": 1008368,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 3.75
+ },
+ {
+  "facility_id": 1008368,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 1378.75
+ },
+ {
+  "facility_id": 1008432,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 21.78828666
+ },
+ {
+  "facility_id": 1008432,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 7041.7607536486
+ },
+ {
+  "facility_id": 1008607,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 30966.75
+ },
+ {
+  "facility_id": 1008639,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 9105.5
+ },
+ {
+  "facility_id": 1008694,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 8279
+ },
+ {
+  "facility_id": 1008890,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 29364.75
+ },
+ {
+  "facility_id": 1008998,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 6665
+ },
+ {
+  "facility_id": 1009054,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 16.25
+ },
+ {
+  "facility_id": 1009054,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 2268.25
+ },
+ {
+  "facility_id": 1009390,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 71784.5
+ },
+ {
+  "facility_id": 1009391,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 28438
+ },
+ {
+  "facility_id": 1009434,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 194668.5
+ },
+ {
+  "facility_id": 1009520,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 20
+ },
+ {
+  "facility_id": 1009520,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 176.5
+ },
+ {
+  "facility_id": 1009701,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 14
+ },
+ {
+  "facility_id": 1009718,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 3832.75
+ },
+ {
+  "facility_id": 1010351,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 28.5
+ },
+ {
+  "facility_id": 1010351,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 2816.5
+ },
+ {
+  "facility_id": 1010488,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 9.5
+ },
+ {
+  "facility_id": 1010488,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 2626
+ },
+ {
+  "facility_id": 1010559,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 6.5
+ },
+ {
+  "facility_id": 1010559,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 17667.25
+ },
+ {
+  "facility_id": 1010634,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 16.75
+ },
+ {
+  "facility_id": 1010634,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 60.25
+ },
+ {
+  "facility_id": 1010691,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 30.5
+ },
+ {
+  "facility_id": 1010691,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 13810.5
+ },
+ {
+  "facility_id": 1010768,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 105.5
+ },
+ {
+  "facility_id": 1010768,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 1558
+ },
+ {
+  "facility_id": 1010780,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 16.1162522
+ },
+ {
+  "facility_id": 1010780,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 24202.1239695283
+ },
+ {
+  "facility_id": 1011064,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 112.75
+ },
+ {
+  "facility_id": 1011064,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 15504
+ },
+ {
+  "facility_id": 1011115,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 29311.75
+ },
+ {
+  "facility_id": 1011127,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 27.25
+ },
+ {
+  "facility_id": 1011127,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 510
+ },
+ {
+  "facility_id": 1011311,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 11.75
+ },
+ {
+  "facility_id": 1011311,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 1107.5
+ },
+ {
+  "facility_id": 1011356,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 92.5
+ },
+ {
+  "facility_id": 1011356,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 4282.5
+ },
+ {
+  "facility_id": 1011365,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 48.75
+ },
+ {
+  "facility_id": 1011365,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 9777
+ },
+ {
+  "facility_id": 1011498,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 6331.25
+ },
+ {
+  "facility_id": 1011510,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 16.166239575
+ },
+ {
+  "facility_id": 1011510,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 11779.0554575686
+ },
+ {
+  "facility_id": 1011558,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 17.280166575
+ },
+ {
+  "facility_id": 1011558,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 15033.063811871
+ },
+ {
+  "facility_id": 1011595,
+  "year": 2023,
+  "subpart": "HH",
+  "ch4_co2e_t": 44895.75
+ },
+ {
+  "facility_id": 1011659,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 458600
+ },
+ {
+  "facility_id": 1011670,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 26.25
+ },
+ {
+  "facility_id": 1011670,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 2003.25
+ },
+ {
+  "facility_id": 1011722,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 6.5
+ },
+ {
+  "facility_id": 1011722,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 4878.25
+ },
+ {
+  "facility_id": 1011896,
+  "year": 2023,
+  "subpart": "D",
+  "ch4_co2e_t": 124.25
+ },
+ {
+  "facility_id": 1011930,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 47.768013
+ },
+ {
+  "facility_id": 1011930,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 4043
+ },
+ {
+  "facility_id": 1011931,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 25.5
+ },
+ {
+  "facility_id": 1011931,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 1345.5
+ },
+ {
+  "facility_id": 1012011,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 9
+ },
+ {
+  "facility_id": 1012011,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 289
+ },
+ {
+  "facility_id": 1012133,
+  "year": 2023,
+  "subpart": "HH",
+  "ch4_co2e_t": 44933.25
+ },
+ {
+  "facility_id": 1012153,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 18
+ },
+ {
+  "facility_id": 1012153,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 1276
+ },
+ {
+  "facility_id": 1012161,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 38.75
+ },
+ {
+  "facility_id": 1012161,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 8160
+ },
+ {
+  "facility_id": 1012321,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 412976.5
+ },
+ {
+  "facility_id": 1012432,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 56694.6639494053
+ },
+ {
+  "facility_id": 1012446,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 12939.25
+ },
+ {
+  "facility_id": 1012449,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 15750.25
+ },
+ {
+  "facility_id": 1012457,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 45348.5
+ },
+ {
+  "facility_id": 1012461,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 56356.25
+ },
+ {
+  "facility_id": 1012463,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 12.25
+ },
+ {
+  "facility_id": 1012463,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 3269.75
+ },
+ {
+  "facility_id": 1012465,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 10.506455
+ },
+ {
+  "facility_id": 1012465,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 21544.5358325917
+ },
+ {
+  "facility_id": 1012519,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 10.25
+ },
+ {
+  "facility_id": 1012519,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 2118.25
+ },
+ {
+  "facility_id": 1012541,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 365709.75
+ },
+ {
+  "facility_id": 1012551,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 352265.75
+ },
+ {
+  "facility_id": 1012558,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 5977
+ },
+ {
+  "facility_id": 1012603,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 339.25
+ },
+ {
+  "facility_id": 1012632,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 13251.25
+ },
+ {
+  "facility_id": 1012675,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 68.9358015
+ },
+ {
+  "facility_id": 1012675,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 5474.75
+ },
+ {
+  "facility_id": 1012676,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 53113
+ },
+ {
+  "facility_id": 1012781,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 86.25
+ },
+ {
+  "facility_id": 1012781,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 4939
+ },
+ {
+  "facility_id": 1012788,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 1
+ },
+ {
+  "facility_id": 1012788,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 122.25
+ },
+ {
+  "facility_id": 1012809,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 88.75
+ },
+ {
+  "facility_id": 1012809,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 2817.25
+ },
+ {
+  "facility_id": 1012845,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 11.770982
+ },
+ {
+  "facility_id": 1012845,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 1386.7117902821
+ },
+ {
+  "facility_id": 1012897,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 5.5
+ },
+ {
+  "facility_id": 1012897,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 22918.5
+ },
+ {
+  "facility_id": 1012901,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 34
+ },
+ {
+  "facility_id": 1012901,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 27309.25
+ },
+ {
+  "facility_id": 1012906,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 49.5
+ },
+ {
+  "facility_id": 1012906,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 16331
+ },
+ {
+  "facility_id": 1012983,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 39.75
+ },
+ {
+  "facility_id": 1012983,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 2281.5
+ },
+ {
+  "facility_id": 1013038,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 26168
+ },
+ {
+  "facility_id": 1013052,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 58.75
+ },
+ {
+  "facility_id": 1013052,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 38281.5
+ },
+ {
+  "facility_id": 1013079,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 89.23226475
+ },
+ {
+  "facility_id": 1013079,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 7507.5
+ },
+ {
+  "facility_id": 1013183,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 25.5468395
+ },
+ {
+  "facility_id": 1013183,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 2282.561610733
+ },
+ {
+  "facility_id": 1013185,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 6.187939475
+ },
+ {
+  "facility_id": 1013185,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 4429.3954874945
+ },
+ {
+  "facility_id": 1013198,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 5.75
+ },
+ {
+  "facility_id": 1013198,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 108584.25
+ },
+ {
+  "facility_id": 1013222,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 28923.25
+ },
+ {
+  "facility_id": 1013266,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 29.75
+ },
+ {
+  "facility_id": 1013266,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 1677.5
+ },
+ {
+  "facility_id": 1013274,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 15.75
+ },
+ {
+  "facility_id": 1013350,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 5.5
+ },
+ {
+  "facility_id": 1013350,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 2051.75
+ },
+ {
+  "facility_id": 1013364,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 17.34211
+ },
+ {
+  "facility_id": 1013364,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 1047.8558894592
+ },
+ {
+  "facility_id": 1013368,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 3694.5
+ },
+ {
+  "facility_id": 1013377,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 28556
+ },
+ {
+  "facility_id": 1013388,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 9982.25
+ },
+ {
+  "facility_id": 1013398,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 15.25
+ },
+ {
+  "facility_id": 1013398,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 26858
+ },
+ {
+  "facility_id": 1013400,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 163
+ },
+ {
+  "facility_id": 1013400,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 6037.25
+ },
+ {
+  "facility_id": 1013407,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 43416
+ },
+ {
+  "facility_id": 1013417,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 2225
+ },
+ {
+  "facility_id": 1013511,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 16.089788
+ },
+ {
+  "facility_id": 1013511,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 4916.984443175
+ },
+ {
+  "facility_id": 1013544,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 100.42543175
+ },
+ {
+  "facility_id": 1013544,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 4093.5
+ },
+ {
+  "facility_id": 1013556,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 89
+ },
+ {
+  "facility_id": 1013556,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 2687.5
+ },
+ {
+  "facility_id": 1013557,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 11
+ },
+ {
+  "facility_id": 1013557,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 3229.75
+ },
+ {
+  "facility_id": 1013558,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 21.5
+ },
+ {
+  "facility_id": 1013558,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 3384
+ },
+ {
+  "facility_id": 1013609,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 72.25
+ },
+ {
+  "facility_id": 1013609,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 293.25
+ },
+ {
+  "facility_id": 1013612,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 10735.25
+ },
+ {
+  "facility_id": 1013616,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 17.75
+ },
+ {
+  "facility_id": 1013621,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 23.5
+ },
+ {
+  "facility_id": 1013621,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 475.75
+ },
+ {
+  "facility_id": 1013662,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 49.25
+ },
+ {
+  "facility_id": 1013662,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 12269
+ },
+ {
+  "facility_id": 1013688,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 7.5
+ },
+ {
+  "facility_id": 1013688,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 7498.5
+ },
+ {
+  "facility_id": 1013701,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 13
+ },
+ {
+  "facility_id": 1013701,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 246.25
+ },
+ {
+  "facility_id": 1013724,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 61
+ },
+ {
+  "facility_id": 1013724,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 10424.25
+ },
+ {
+  "facility_id": 1013726,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 12.75
+ },
+ {
+  "facility_id": 1013726,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 10805.25
+ },
+ {
+  "facility_id": 1013736,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 5539.75
+ },
+ {
+  "facility_id": 1013737,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 8286.75
+ },
+ {
+  "facility_id": 1013739,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 10.5
+ },
+ {
+  "facility_id": 1013739,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 4722.25
+ },
+ {
+  "facility_id": 1013774,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 21
+ },
+ {
+  "facility_id": 1013774,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 6320.75
+ },
+ {
+  "facility_id": 1013786,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 25.0233192
+ },
+ {
+  "facility_id": 1013786,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 7960.7451472386
+ },
+ {
+  "facility_id": 1013787,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 24.09908515
+ },
+ {
+  "facility_id": 1013787,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 14901.8029174123
+ },
+ {
+  "facility_id": 1013788,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 3.25
+ },
+ {
+  "facility_id": 1013788,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 11012
+ },
+ {
+  "facility_id": 1013789,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 34.75
+ },
+ {
+  "facility_id": 1013789,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 10930
+ },
+ {
+  "facility_id": 1013814,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 64.5
+ },
+ {
+  "facility_id": 1013814,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 5491.5
+ },
+ {
+  "facility_id": 1013827,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 14.25
+ },
+ {
+  "facility_id": 1013827,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 3124.5
+ },
+ {
+  "facility_id": 1013840,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 83.25
+ },
+ {
+  "facility_id": 1013840,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 1407.25
+ },
+ {
+  "facility_id": 1013841,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 61
+ },
+ {
+  "facility_id": 1013841,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 7216
+ },
+ {
+  "facility_id": 1013845,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 143121.5
+ },
+ {
+  "facility_id": 1013867,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 44.5
+ },
+ {
+  "facility_id": 1013867,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 20170
+ },
+ {
+  "facility_id": 1013883,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 11.75
+ },
+ {
+  "facility_id": 1013883,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 161
+ },
+ {
+  "facility_id": 1013886,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 14
+ },
+ {
+  "facility_id": 1013886,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 287.75
+ },
+ {
+  "facility_id": 1013892,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 8245.75
+ },
+ {
+  "facility_id": 1013904,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 20
+ },
+ {
+  "facility_id": 1013904,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 1343.75
+ },
+ {
+  "facility_id": 1013932,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 29.5
+ },
+ {
+  "facility_id": 1013932,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 5587.5
+ },
+ {
+  "facility_id": 1013937,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 4676
+ },
+ {
+  "facility_id": 1013952,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 8183.5
+ },
+ {
+  "facility_id": 1013964,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 910.5
+ },
+ {
+  "facility_id": 1013973,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 53.5
+ },
+ {
+  "facility_id": 1013973,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 5954.25
+ },
+ {
+  "facility_id": 1014071,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 15888.25
+ },
+ {
+  "facility_id": 1014093,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 73.75
+ },
+ {
+  "facility_id": 1014093,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 4305
+ },
+ {
+  "facility_id": 1014094,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 27.25
+ },
+ {
+  "facility_id": 1014094,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 2589.75
+ },
+ {
+  "facility_id": 1014278,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 30.5
+ },
+ {
+  "facility_id": 1014281,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 29.75
+ },
+ {
+  "facility_id": 1014321,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 10225.5
+ },
+ {
+  "facility_id": 1014335,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 17.75
+ },
+ {
+  "facility_id": 1014335,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 3478.25
+ },
+ {
+  "facility_id": 1014346,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 0.5
+ },
+ {
+  "facility_id": 1014346,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 142.5
+ },
+ {
+  "facility_id": 1014368,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 26.25
+ },
+ {
+  "facility_id": 1014368,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 17596.5
+ },
+ {
+  "facility_id": 1014369,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 33191.25
+ },
+ {
+  "facility_id": 1014376,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 3651.75
+ },
+ {
+  "facility_id": 1014394,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 274.5
+ },
+ {
+  "facility_id": 1014396,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 18.75
+ },
+ {
+  "facility_id": 1014396,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 11416.5
+ },
+ {
+  "facility_id": 1014402,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 301.25
+ },
+ {
+  "facility_id": 1014467,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 31.75
+ },
+ {
+  "facility_id": 1014467,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 944.75
+ },
+ {
+  "facility_id": 1014485,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 26.141495975
+ },
+ {
+  "facility_id": 1014485,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 3903.9580352432
+ },
+ {
+  "facility_id": 1014504,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 31309
+ },
+ {
+  "facility_id": 1014627,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 12.25
+ },
+ {
+  "facility_id": 1014638,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 12.25
+ },
+ {
+  "facility_id": 1014640,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 8507.75
+ },
+ {
+  "facility_id": 1014673,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 13.5
+ },
+ {
+  "facility_id": 1014673,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 3064.25
+ },
+ {
+  "facility_id": 1014688,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 21385.25
+ },
+ {
+  "facility_id": 1014702,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 4915.5
+ },
+ {
+  "facility_id": 1014704,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 11639.75
+ },
+ {
+  "facility_id": 1014727,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 8110.75
+ },
+ {
+  "facility_id": 1014729,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 405.75
+ },
+ {
+  "facility_id": 1014794,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 87.75
+ },
+ {
+  "facility_id": 1014794,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 2118.75
+ },
+ {
+  "facility_id": 1014813,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 17.25
+ },
+ {
+  "facility_id": 1014813,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 9969
+ },
+ {
+  "facility_id": 1014815,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 15.800926335
+ },
+ {
+  "facility_id": 1014815,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 5184.9914599262
+ },
+ {
+  "facility_id": 1014816,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 27.5
+ },
+ {
+  "facility_id": 1014816,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 11550.25
+ },
+ {
+  "facility_id": 1014817,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 16.5
+ },
+ {
+  "facility_id": 1014817,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 1604.25
+ },
+ {
+  "facility_id": 1014818,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 24
+ },
+ {
+  "facility_id": 1014818,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 4108
+ },
+ {
+  "facility_id": 1014825,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 1.98724125
+ },
+ {
+  "facility_id": 1014825,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 592.6697630144
+ },
+ {
+  "facility_id": 1014826,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 14.74183375
+ },
+ {
+  "facility_id": 1014826,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 1828.7358224736
+ },
+ {
+  "facility_id": 1014869,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 1891.25
+ },
+ {
+  "facility_id": 1014894,
+  "year": 2023,
+  "subpart": "C",
+  "ch4_co2e_t": 1.5
+ },
+ {
+  "facility_id": 1014894,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 22989.25
+ },
+ {
+  "facility_id": 1014908,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 266.5
+ },
+ {
+  "facility_id": 1014914,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 1014.25
+ },
+ {
+  "facility_id": 1015132,
+  "year": 2023,
+  "subpart": "W",
+  "ch4_co2e_t": 5773.25
+ }
+]

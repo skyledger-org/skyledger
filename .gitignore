@@ -1,9 +1,16 @@
 .env
 .env.*
 !.env.example
-__pycache__/
-*.pyc
-.venv/
 node_modules/
-logs/*.jsonl
-data/cache/
+logs/*
+!logs/.gitkeep
+data/zetaris/
+vendor/*/reference/node_modules/
+# Vendored Meterless engines: commit only the parts SkyLedger uses (code, specs, conformance, licences)
+vendor/hmem/
+vendor/markovian/
+vendor/*/images/
+vendor/*/content/
+vendor/*/workshops/
+vendor/*/demos/
+vendor/*/token-economics-demo/

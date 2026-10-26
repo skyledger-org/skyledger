@@ -1,0 +1,44 @@
+{
+  "name": "SkyLedger",
+  "track": "Track 1: Solving Fragmented Intelligence",
+  "tagline": "Satellites see the leaks. Companies report the numbers. An agent team checks one against the other.",
+  "repository": "https://github.com/skyledger-org/skyledger",
+  "entry_points": {
+    "http": "POST /run on 0.0.0.0:8000 (run.ts)",
+    "cli": "npx tsx run.ts --once input_examples/example_1.json",
+    "ui": "GET / on 0.0.0.0:8000",
+    "eval": "npm run eval"
+  },
+  "sample_mode": "SAMPLE_MODE=true (default) runs with no credentials, no network and no GPU",
+  "traces": "logs/trace-<run_id>.jsonl, hash-chained, also printed to stdout",
+  "agents": ["SourceMapper", "GeoLinker", "PlumeReader", "OwnershipResolver", "Reconciler", "Skeptic", "Reporter", "SignOff"],
+  "sponsor_technology": {
+    "zetaris": {
+      "where": ["app/adapters/zetaris.ts", "app/agents/geo_linker.ts", "app/orchestrator.ts (SourceMapper)"],
+      "what": "Federated geo-join of Carbon Mapper sources x GHGRP facilities x GHGRP CH4 totals, queried in place over the Zetaris REST SQL API; source discovery and row counts"
+    },
+    "meterless": {
+      "nightshift": {
+        "where": ["app/adapters/meterless.ts", "app/agents/plume_reader.ts", "app/agents/reporter.ts", "eval/run_eval.ts"],
+        "what": "Primary AI provider per the Power-prompt contract (headers, /v1/models discovery, rt-local rejection, 180 s timeout, Auto Detect)"
+      },
+      "world_model": {
+        "where": ["app/engines/world_model.ts", "app/agents/ownership.ts", "vendor/world-model/reference (unmodified, Apache-2.0)"],
+        "what": "Facility -> owner -> parent entity graph with provenance on every write, alias merging of messy owner strings, operator review queue, audit log"
+      },
+      "scout_intent": {
+        "where": ["app/agents/signoff.ts"],
+        "what": "Analyst sign-off issues an ExecutionContract in the Scout Intent shape, HMAC-SHA256 over canonical JSON, with an operator-review approval record"
+      }
+    },
+    "nvidia": {
+      "where": ["app/agents/plume_reader.ts", "app/agents/reporter.ts"],
+      "what": "Nemotron models served through Meterless Nightshift lanes: vision lane reads the plume image (PlumeReader), reasoning lane words the dossier (Reporter)"
+    },
+    "cursor": {
+      "where": [".cursor/rules/", "CURSOR.md"],
+      "what": "Development environment"
+    }
+  },
+  "data_sources": ["Carbon Mapper CH4 sources and plumes", "US EPA GHGRP (Envirofacts) facilities and CH4 by subpart, RY2023", "SEC EDGAR company tickers (optional)"]
+}

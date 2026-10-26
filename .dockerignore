@@ -1,0 +1,8 @@
+.env
+.env.*
+node_modules
+logs
+docs
+.git
+vendor/*/node_modules
+data/zetaris
