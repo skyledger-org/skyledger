@@ -43,6 +43,14 @@ export const config = {
     },
     timeoutMs: 30_000,
   },
+  // Fallback for the vision step only: Nightshift 1.2.7 refuses image requests to Nemotron VL rows
+  // (they are kept out of automatic routing, and the image check runs before a named model is honoured).
+  nvidia: {
+    baseUrl: "https://integrate.api.nvidia.com/v1",
+    apiKey: env("NVIDIA_API_KEY"),
+    visionModel: env("NVIDIA_VISION_MODEL", "nvidia/nemotron-3.5-super-vl-120b-a12b"),
+    timeoutMs: 120_000,
+  },
   // GWP used by GHGRP to report CH4 as CO2e for RY2023 (40 CFR 98 Table A-1 before the 2024 amendments: AR4, 25).
   ch4Gwp: Number(env("CH4_GWP", "25")),
   ghgrpYear: 2023,
@@ -51,3 +59,4 @@ export const config = {
 
 export const hasMeterless = () => !isPlaceholder(config.meterless.token);
 export const hasZetaris = () => !isPlaceholder(config.zetaris.apiKey);
+export const hasNvidiaDirect = () => config.nvidia.apiKey.startsWith("nvapi-");

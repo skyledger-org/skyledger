@@ -7,7 +7,7 @@ import { Tracer } from "./tracing.ts";
 import { OwnershipGraph } from "./engines/world_model.ts";
 import { sampleData } from "./adapters/sample_data.ts";
 import { listSources } from "./adapters/zetaris.ts";
-import { discover } from "./adapters/meterless.ts";
+import { connect } from "./adapters/meterless.ts";
 import { geoLink } from "./agents/geo_linker.ts";
 import { readPlume } from "./agents/plume_reader.ts";
 import { buildOwnershipGraph, resolveOwnership } from "./agents/ownership.ts";
@@ -32,6 +32,12 @@ function loadPlumes(input: RunState["input"]): Plume[] {
     const obs: string[] = s.observation_dates ?? [];
     return {
       ...p,
+      // Attribution uses the Carbon Mapper SOURCE location (the clustered origin the rate and persistence
+      // describe, and the row the Zetaris join keys on); the plume record keeps its own point for the image.
+      plume_lat: p.lat,
+      plume_lon: p.lon,
+      lat: s.lat ?? p.lat,
+      lon: s.lon ?? p.lon,
       detection_dates: det,
       observation_dates: obs,
       // A detection implies an observation that day, even if the scene list omits it.
@@ -65,9 +71,9 @@ async function sourceMapper(ctx: AgentContext, forceSample: boolean) {
   let models = "deterministic fallbacks (SAMPLE_MODE)";
   let modelsOnline = false;
   if (!forceSample && hasMeterless()) {
-    const m = await discover();
+    const m = await connect();
     modelsOnline = m.status === "online";
-    models = `Meterless Nightshift ${m.status}${m.models.length ? ` (${m.models.length} models)` : ""}`;
+    models = `Meterless Nightshift ${m.status} at ${m.baseUrl}${m.models.length ? ` (${m.models.length} models)` : ""}`;
   } else if (!forceSample) models = "Meterless token not set: deterministic fallbacks";
   ctx.offlineSql = !zetarisOk;
   ctx.offlineModels = !modelsOnline;

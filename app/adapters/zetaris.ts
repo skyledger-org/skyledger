@@ -40,6 +40,11 @@ export async function zetarisSql(sql: string, limit = 1000): Promise<Record<stri
 
 // The REST response nests rows differently across versions; accept the common shapes.
 function parseRows(body: any): Record<string, unknown>[] {
+  // Zetaris 2.4.3.1: { headers: [col, ...], data: [[v, ...], ...], total, timeUsed }, values as strings.
+  if (Array.isArray(body?.headers) && Array.isArray(body?.data)) {
+    const cols = body.headers.map((h: any) => String(typeof h === "string" ? h : h?.name ?? h).toLowerCase());
+    return body.data.map((r: unknown[]) => Object.fromEntries(cols.map((c: string, i: number) => [c, r[i]])));
+  }
   const node = body?.data ?? body?.result ?? body;
   const rows = node?.rows ?? node?.records ?? node?.data ?? node;
   const cols: string[] | undefined = (node?.columns ?? node?.schema ?? body?.columns)?.map((c: any) => (typeof c === "string" ? c : c.name ?? c.columnName));

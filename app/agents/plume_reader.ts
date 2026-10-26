@@ -2,8 +2,8 @@
 // Physics first: Carbon Mapper's plume coordinate is the estimated origin, and the plume extends DOWNWIND.
 // A facility lying downwind of the origin is in the plume's path, not at its head, so it can't be the source.
 // Live mode adds Nemotron vision (via Meterless Nightshift) on the plume image; the geometry stays as a check.
-import { chat, imageDataUrl, parseJsonReply } from "../adapters/meterless.ts";
-import { config } from "../config.ts";
+import { chat, imageDataUrl, parseJsonReply, isVisionRefusal, nvidiaDirectChat } from "../adapters/meterless.ts";
+import { config, hasNvidiaDirect } from "../config.ts";
 import { angleDiff, compass } from "../geo.ts";
 import type { AgentContext } from "./context.ts";
 import type { Candidate, PlumeCase } from "../state.ts";
@@ -45,17 +45,25 @@ export function geometryVerdict(c: PlumeCase) {
   return { consistent, inconsistent, calm, windText, notes };
 }
 
-async function visionRead(c: PlumeCase, geo: ReturnType<typeof geometryVerdict>, attempt: number) {
+// The model reads the plume's direction from the IMAGE ALONE: no wind, no candidate list, so it can't
+// echo what we told it. The code then compares its heading with the wind; agreement is independent corroboration.
+async function visionRead(c: PlumeCase, attempt: number) {
   const p = c.plume;
-  const pts = c.candidates.filter((k) => k.kind === "point").slice(0, 5);
-  const facts = pts.map((k) => `- id ${k.facility_id}: ${k.facility_name}, ${k.dist_m} m to the ${compass(k.bearing_from_plume_deg)} (bearing ${k.bearing_from_plume_deg}°)`).join("\n");
-  const prompt = `You are PlumeReader, a remote-sensing analyst. The image is a Carbon Mapper methane plume (${p.platform}, ${p.scene_timestamp}) overlaid on true-colour imagery, north up. The plume's estimated origin is the image centre region. Reported ${geo.windText}.
-Candidate facilities relative to the plume origin:
-${facts || "- none (no point facilities)"}
-${attempt > 0 ? "A Skeptic disputed the first reading. Look again at where the plume is narrowest and most concentrated (its head) versus where it fans out (its tail).\n" : ""}Which candidate, if any, is at the plume's head? A facility lying in the direction the plume fans out is downwind and cannot be the source.
-Reply ONLY with JSON: {"source_facility_id": <id or null>, "plume_heading_deg": <0-359 direction the plume extends>, "confidence": <0-1>, "reason": "<one sentence>"}`;
-  const r = await chat(config.meterless.modelVision, [{ role: "user", content: [{ type: "text", text: prompt }, { type: "image_url", image_url: { url: imageDataUrl(p.image!) } }] }], { maxTokens: 300 });
-  return { ...r, json: parseJsonReply(r.text) };
+  const prompt = `You are PlumeReader, a remote-sensing analyst. The image is a Carbon Mapper methane plume (${p.platform}, ${p.scene_timestamp.slice(0, 10)}): the coloured overlay is methane concentration on true-colour imagery, north up.
+A plume is narrow and most concentrated at its head (the source) and widens and fades downwind (its tail).
+${attempt > 0 ? "A Skeptic disputed your first reading. Look again carefully at where the overlay is narrowest and brightest versus where it fans out.\n" : ""}In which compass direction does the plume extend from its head toward its tail?
+Reply ONLY with JSON: {"plume_heading_deg": <0-359, 0 = north, 90 = east>, "confidence": <0-1>, "reason": "<one sentence on what in the image shows it>"}`;
+  const messages = [{ role: "user" as const, content: [{ type: "text" as const, text: prompt }, { type: "image_url" as const, image_url: { url: imageDataUrl(p.image!) } }] }];
+  // Nightshift first. 1.2.7 refuses image requests to Nemotron VL rows; only then go to NVIDIA directly,
+  // with the same model family, and say so in the evidence.
+  try {
+    const r = await chat(config.meterless.modelVision, messages, { maxTokens: 300 });
+    return { ...r, json: parseJsonReply(r.text), route: "meterless-nightshift" as const, refusal: null as string | null };
+  } catch (e) {
+    if (!isVisionRefusal(e) || !hasNvidiaDirect()) throw e;
+    const r = await nvidiaDirectChat(messages, { maxTokens: 300 });
+    return { ...r, json: parseJsonReply(r.text), route: "nvidia-direct" as const, refusal: (e as Error).message.slice(0, 160) };
+  }
 }
 
 export async function readPlume(ctx: AgentContext, c: PlumeCase, attempt = 0) {
@@ -70,26 +78,33 @@ export async function readPlume(ctx: AgentContext, c: PlumeCase, attempt = 0) {
 
   if (!ctx.offlineModels && p.image) {
     try {
-      const v = await visionRead(c, geo, attempt);
+      const v = await visionRead(c, attempt);
       mode = "vision";
-      const vid = v.json?.source_facility_id == null ? null : Number(v.json.source_facility_id);
-      const vPick = c.candidates.find((k) => k.facility_id === vid) ?? null;
-      modelNote = `Nemotron (${v.model}, ${v.ms} ms${v.receipt ? `, receipt ${v.receipt}` : ""}): ${v.json?.reason ?? v.text.slice(0, 160)}`;
-      c.evidence.push({ source: "meterless-nightshift", kind: "model", detail: modelNote, image: p.image });
-      if (vPick?.facility_id === geoPick?.facility_id) {
-        confidence = Math.min(0.95, Math.max(confidence, Number(v.json?.confidence ?? 0.7)) + 0.1);
-      } else if (vPick && geo.inconsistent.includes(vPick.facility_id)) {
-        // Vision named a facility the physics rules out; keep geometry, lower confidence, let the Skeptic decide.
-        confidence = 0.4;
-        verdict = `vision named ${vPick.facility_name}, but it lies downwind; geometry keeps ${geoPick?.facility_name ?? "none"}`;
-      } else if (vPick) {
-        pick = vPick;
-        confidence = Number(v.json?.confidence ?? 0.6);
-        verdict = `vision places the plume head at ${vPick.facility_name}`;
+      const heading = Number(v.json?.plume_heading_deg);
+      const vConf = Math.max(0, Math.min(1, Number(v.json?.confidence ?? 0.5)));
+      const via = v.route === "nvidia-direct" ? "NVIDIA API direct (Nightshift refused the image)" : "Meterless Nightshift";
+      const echo = v.model && v.model !== config.nvidia.visionModel && v.route === "nvidia-direct" ? `, provider echoed ${v.model}` : "";
+      if (!Number.isFinite(heading)) {
+        modelNote = `Nemotron vision via ${via}: no usable heading in the reply`;
+      } else if (p.wind_direction_deg == null || (p.wind_speed_ms ?? 0) < 1.5) {
+        modelNote = `Nemotron vision via ${via} reads the plume heading ${Math.round(heading)}° (${compass(heading)}); wind too weak to compare`;
       } else {
-        confidence = Math.min(confidence, 0.45);
-        verdict = `vision found no candidate at the plume head; geometry suggests ${geoPick?.facility_name ?? "none"}`;
+        const downwind = (p.wind_direction_deg + 180) % 360;
+        const off = Math.round(angleDiff(heading, downwind));
+        const agrees = off <= CONE;
+        modelNote = `Nemotron vision via ${via} reads the plume heading ${Math.round(heading)}° (${compass(heading)}) from the image alone; the wind says ${Math.round(downwind)}° (${compass(downwind)}): ${agrees ? "agrees" : "disagrees"} (${off}° apart, model confidence ${vConf.toFixed(2)})`;
+        if (agrees) {
+          confidence = Math.min(0.95, confidence + 0.1 * vConf + 0.05);
+          verdict += `; Nemotron vision independently confirms the plume runs ${compass(heading)}`;
+        } else {
+          // Image and wind disagree: the geometry rests on a wind estimate the picture contradicts.
+          confidence = Math.min(confidence, 0.45);
+          verdict += `; Nemotron vision reads the plume running ${compass(heading)}, against the wind's ${compass(downwind)}`;
+        }
       }
+      modelNote += ` [${config.nvidia.visionModel}, ${v.ms} ms${v.receipt ? `, receipt ${v.receipt}` : ""}${echo}]: ${String(v.json?.reason ?? v.text).slice(0, 160)}`;
+      if (v.refusal) ctx.tracer.log({ agent_name: "PlumeReader", action: "vision_route", plume_id: p.plume_id, status: "fallback", retry_count: attempt, input_summary: `Nightshift ${config.meterless.modelVision}`, output_summary: `Nightshift refused the image (${v.refusal}); same Nemotron VL called on NVIDIA directly` });
+      c.evidence.push({ source: v.route, kind: "model", detail: modelNote, image: p.image ?? undefined });
     } catch (e) {
       ctx.tracer.log({ agent_name: "PlumeReader", action: "vision_call", plume_id: p.plume_id, status: "fallback", retry_count: attempt, input_summary: "Nemotron vision via Meterless", output_summary: `model call failed (${(e as Error).message}); using geometry only` });
     }

@@ -171,7 +171,7 @@ function drawPlume(canvas, d) {
       ctx.font = "bold 12px system-ui"; ctx.lineWidth = 3; ctx.strokeText(k.facility_name.slice(0, 22), x + 9, y + 4); ctx.fillText(k.facility_name.slice(0, 22), x + 9, y + 4);
     });
     // origin
-    const [ox, oy] = xy(p.lat, p.lon);
+    const [ox, oy] = xy(p.plume_lat ?? p.lat, p.plume_lon ?? p.lon);
     ctx.strokeStyle = "#fff"; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(ox - 9, oy); ctx.lineTo(ox + 9, oy); ctx.moveTo(ox, oy - 9); ctx.lineTo(ox, oy + 9); ctx.stroke();
     // wind arrow (blowing toward wind_from + 180)
     if (p.wind_direction_deg != null) {

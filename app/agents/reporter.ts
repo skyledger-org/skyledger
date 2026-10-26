@@ -33,6 +33,28 @@ export function templateSummary(c: PlumeCase, year: number): string {
   }
 }
 
+const fmt = (n: number) => Math.round(n).toLocaleString("en-US");
+
+function facts(c: PlumeCase, year: number): Record<string, string> {
+  const p = c.plume, f = c.attributed!;
+  return {
+    facility: f.facility_name,
+    parent_companies: c.owners.map((o) => o.name).join(", ") || "unknown",
+    observed_rate: `${fmt(p.emission_kgph!)} kg/h (average across overpasses)`,
+    sightings: `${p.window.detections} of ${p.window.observations} overpass dates, ${p.window.from} to ${p.window.to}`,
+    implied_annual: `${fmt(c.implied_tch4![0])} to ${fmt(c.implied_tch4![1])} t CH4 per year`,
+    reported_annual: `${fmt(f.reported_ch4_t!)} t CH4 for reporting year ${year}`,
+    ratio: `${c.ratio![0]} to ${c.ratio![1]} times the reported figure`,
+  };
+}
+
+/** Numbers in `text` that do not appear in `allowed` (commas ignored). The model may word facts, not invent figures. */
+export function strayNumbers(text: string, allowed: string): string[] {
+  const norm = (s: string) => s.replace(/,/g, "");
+  const ok = new Set((allowed.match(/\d[\d,]*(\.\d+)?/g) ?? []).map(norm));
+  return (text.match(/\d[\d,]*(\.\d+)?/g) ?? []).map(norm).filter((n) => !ok.has(n) && !(Number(n) <= 5 && !n.includes(".")));
+}
+
 export async function report(ctx: AgentContext, c: PlumeCase) {
   const year = ctx.state.input.year;
   const template = templateSummary(c, year);
@@ -40,13 +62,17 @@ export async function report(ctx: AgentContext, c: PlumeCase) {
   let how = "template";
   if (!ctx.offlineModels && c.verdict === "inconsistent_with_report") {
     try {
-      const facts = { facility: c.attributed?.facility_name, parents: c.owners.map((o) => o.name), rate_kgph: c.plume.emission_kgph, sightings_in_reporting_window: `${c.plume.window.detections}/${c.plume.window.observations}`, implied_tch4_range: c.implied_tch4, reported_tch4: c.attributed?.reported_ch4_t, ratio_range: c.ratio, rivals: c.rivals.map((r) => `${r.id} ${r.status}: ${r.note}`) };
+      // Pre-formatted, unit-labelled facts: the model words them, it never computes or converts.
+      const f = facts(c, year);
       const r = await chat(config.meterless.modelReasoning, [
-        { role: "system", content: "You write two-sentence draft findings for an ESG credit analyst. Use only the numbers given. Say 'inconsistent with available data'; never allege fraud, intent or violations. Always give ranges, never a single number." },
-        { role: "user", content: JSON.stringify(facts) },
+        { role: "system", content: "You write a two-sentence draft finding for an ESG credit analyst. Copy every number exactly as written in the facts, with its unit; do not compute, convert or round anything. Say 'inconsistent with available data'; never allege fraud, intent or violations. Give the annual figures as ranges." },
+        { role: "user", content: Object.entries(f).map(([k, v]) => `${k}: ${v}`).join("\n") },
       ], { maxTokens: 220 });
+      const stray = strayNumbers(r.text, Object.values(f).join(" "));
       if (BANNED.test(r.text)) {
         ctx.tracer.log({ agent_name: "Reporter", action: "guard_block", plume_id: c.plume.plume_id, status: "blocked", input_summary: "model draft", output_summary: "accusatory wording detected; using guarded template" });
+      } else if (stray.length) {
+        ctx.tracer.log({ agent_name: "Reporter", action: "number_guard_block", plume_id: c.plume.plume_id, status: "blocked", input_summary: "model draft", output_summary: `numbers not in the computed facts (${stray.slice(0, 5).join(", ")}); using guarded template`, data: { draft: r.text.slice(0, 400) } });
       } else if (r.text.trim()) {
         text = r.text.trim();
         how = `${r.model}${r.receipt ? ` (receipt ${r.receipt})` : ""}`;

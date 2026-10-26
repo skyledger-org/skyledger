@@ -3,8 +3,10 @@
 export interface Plume {
   plume_id: string;
   source_name: string;
-  lat: number;
+  lat: number; // Carbon Mapper source (clustered origin) location
   lon: number;
+  plume_lat?: number; // this plume record's own origin, used to place the image marker
+  plume_lon?: number;
   scene_timestamp: string;
   platform: string;
   sector: string;
