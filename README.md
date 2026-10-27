@@ -8,6 +8,10 @@ Methane plumes observed from aircraft and satellites (Carbon Mapper: Tanager, EM
 
 **Who it's for:** ESG and credit analysts, and regulators, who must judge whether a company's reported emissions are plausible. One example is an analyst reviewing California SB 253 Scope 1 disclosures due **Nov 10, 2026**. EPA has delayed RY2025 GHGRP reporting and proposed ending most of the program, which leaves satellite data as one of the few independent checks.
 
+**Links:** slide deck [docs/deck/SkyLedger-deck.pdf](docs/deck/SkyLedger-deck.pdf) (also served at `/deck`) · submission text [docs/SUBMISSION.md](docs/SUBMISSION.md)
+
+**Contents:** [What a run finds](#what-a-run-finds-real-output-sample-data-60-permian-plumes) · [Requirements](#requirements-and-dependencies) · [Quick start](#quick-start-no-credentials-no-network-no-gpu) · [Using SkyLedger](#using-skyledger) · [Live mode](#live-mode-zetaris--meterless-nightshift--nemotron) · [How Zetaris, Meterless and NVIDIA are used](#how-zetaris-and-meterless-are-integrated-and-where-nvidia-contributes) · [Architecture](#architecture) · [Agents](#the-agents) · [Configuration](#configuration-nothing-hardcoded) · [Traces](#traces) · [API](#api) · [Eval](#eval) · [Limitations](#limitations-read-before-trusting-a-number) · [Pre-existing components](#pre-existing-components)
+
 ## What a run finds (real output, sample data, 60 Permian plumes)
 
 From `output_examples/example_1.json`:
@@ -50,11 +54,34 @@ curl -s -X POST localhost:8000/run -H "Content-Type: application/json" -d @input
 
 `SAMPLE_MODE=true` is the default. SQL is answered from the cached files in `data/sample/`, and model steps use their deterministic fallbacks. Every trace line and evidence item records which engine answered (`zetaris` or `sample-cache`, `vision` or `geometry`).
 
+## Using SkyLedger
+
+1. **Landing page** (http://localhost:8000/): the problem, one plume followed through the agents, and the evidence numbers. Every figure on it comes from `/api/stats`.
+2. **Analyst console** (`/app`):
+   - Pick a **region**, a **reporting year** and **Offline sample** or **Live engines**, then press **Run the agents**, or click one of the three scenarios. The agent trace streams on the right as it is written.
+   - Click a plume on the left (or on the map) to open its **dossier**: the verdict in plain language, observed rate, sightings in the window, the implied yearly range against the reported total, the plume image, the Skeptic's five tests, the owner and parent companies, nearby facilities, and the evidence (the exact SQL, the rows hash, the model calls).
+   - **Verify hash chain** checks that the trace has not been edited. **Approve & sign** issues the execution contract; until then every dossier is "draft, not shareable".
+   - The **Parent companies** tab rolls inconsistent facilities up to their parents.
+3. **Labelling page** (`/label`): one plume at a time, with the picture, lettered facilities and one question. SkyLedger's answers are never shown there. Answers go to `eval/labels.csv`, and `npm run eval` scores SkyLedger and two baselines against them.
+4. **Slide deck** (`/deck`): the pitch deck, with its numbers read from the same API.
+5. **Headless:** `POST /run` (see [API](#api)) or `npx tsx run.ts --once <input.json>`. Each run writes `logs/run-<id>.json` and a hash-chained `logs/trace-<id>.jsonl`.
+
+| npm script | What it does |
+|---|---|
+| `npm start` | Serves the landing page, console, labelling page, deck and API on port 8000 |
+| `npm run run -- <input.json>` | One run from the command line |
+| `npm run eval` | Scores SkyLedger and the baselines against `eval/labels.csv` → `eval/results.md` |
+| `npm run verify -- <trace.jsonl>` | Checks a trace's hash chain |
+| `npm run cache -- <region>` | Fetches and caches a region's public data |
+| `npm run export:zetaris` / `npm run register:zetaris` | Exports the cache as CSV for Zetaris / registers the three Zetaris tables |
+| `npm run check:meterless` | Meterless provider done-criteria against the running Nightshift |
+| `npm run typecheck` | TypeScript check |
+
 ## Live mode (Zetaris + Meterless Nightshift + Nemotron)
 
 1. Run Zetaris locally and register the three sources (`npm run export:zetaris`, then follow `docs/ZETARIS_SETUP.md`).
 2. Run Meterless Nightshift, add the NVIDIA key under **Setup → Providers**, and pin the Nemotron lanes.
-3. `cp .env.example .env`, then fill in `METERLESS_*`, `ZETARIS_*` and `SAMPLE_MODE=false`.
+3. `cp .env.example .env`, then fill in `METERLESS_BASE_URL` and `METERLESS_RUNTIME_TOKEN` (from Nightshift → Console), `ZETARIS_REST_URL`, `ZETARIS_ORG_ID` and `ZETARIS_API_KEY` (from the Zetaris UI), optionally `NVIDIA_API_KEY` (vision fallback, see the disclosure below), and `SAMPLE_MODE=false`. Secrets stay in `.env`, which is git-ignored.
 4. `npm start`, open http://localhost:8000/app, pick **Live engines** and press **Run with live engines**. The status bar at the top shows which engines are live.
 
 `AI_PROVIDER` chooses where model calls go: `nightshift` (default), `nvidia` (NVIDIA's API directly, e.g. for a hosted copy with no Nightshift on the machine) or `none`.
@@ -119,6 +146,20 @@ Design rules:
 
 **Reconciliation math.** Implied annual CH₄ runs from (rate − 1σ) × 8.76 × (detections / overpasses in the window) up to (rate + 1σ) × 8.76 × 1.0. Reported CH₄ = GHGRP CO₂e ÷ 25 (the AR4 GWP used for RY2023; verified in the data). "Inconsistent" means even the **low** bound exceeds the report.
 
+## How Zetaris and Meterless are integrated, and where NVIDIA contributes
+
+**Zetaris: the data layer.** The three public sources (Carbon Mapper methane sources, EPA GHGRP facilities, GHGRP CH₄ totals by subpart) are registered in Zetaris as Lightning filestore tables (`scripts/zetaris_register.ts`). SkyLedger never copies them into its own store. At the start of each run, SourceMapper asks Zetaris which tables are reachable and how many rows they hold. For every plume, GeoLinker sends **one federated geo-join** through the Zetaris REST SQL API: sources × facilities × CH₄ totals, with a bounding-box prefilter and a haversine distance, so the join happens where the data lives. The exact SQL text and a hash of the returned rows go into the plume's dossier as evidence, so an analyst can rerun the query. Verified live: the Zetaris answer equals the offline cache for 60 of 60 plumes (`scripts/check_zetaris_parity.ts`), and the queries appear in the Zetaris SQL Workspace history.
+
+**Meterless: the AI provider and the engines.**
+- **Nightshift is the primary AI provider.** Every text model call (the Reporter's dossier wording, the single-LLM eval baseline) goes to Nightshift's OpenAI-compatible endpoint, built to Meterless's "Add Meterless as a provider" contract: URL normalisation, `meterless-app`/`meterless-scope` headers, `/v1/models` discovery with an unauthorized state, `rt-local` rejection, a 180 s timeout and Auto Detect. The NVIDIA key lives inside Nightshift's Providers tab; the app holds only the Nightshift runtime token. `npm run check:meterless` passes the contract's done-criteria.
+- **World Model** (the reference engine, vendored unmodified) holds the facility → owner → parent graph. OwnershipResolver writes every GHGRP owner string with provenance, the engine merges near-duplicate spellings (`TARGA RESOURCES CORP` and `TARGA RESOURCES`) and queues uncertain merges for review, and the parent roll-up reads the alias-following graph view. Meterless's own conformance suite passes **8/8** against the engine we run (`docs/evidence/world-model-conformance.txt`).
+- **Scout Intent's execution-contract format** is used at sign-off: HMAC-SHA256 over canonical JSON, bound to the dossier hash and the trace head.
+
+**NVIDIA: where Nemotron contributes.**
+- **Nemotron 3.5 Lightning, through Nightshift,** writes every dossier from unit-labelled facts computed by the code. A guard rejects any number the code did not compute and any accusatory wording.
+- **Nemotron 3.5 Super VL** reads each plume image **blind** (no wind, no candidate facilities) and reports which way the plume runs; PlumeReader compares that with the wind. On the 60-plume live run it agreed with the wind 24 of 64 times (38%, against about 33% by chance), so vision is **advisory**: agreement adds confidence, and disagreement is recorded but never downgrades a case.
+- Nightshift 1.2.7 refuses image requests to Nemotron VL, so the vision call tries Nightshift first and only then calls the same model on NVIDIA's API, logging every fallback (see the disclosure below).
+
 ## Sponsor technology
 
 | Sponsor | Where | What it does in SkyLedger |
@@ -158,7 +199,7 @@ Each run writes `logs/trace-<run_id>.jsonl` (one JSON object per line, also prin
 
 ## API
 
-`POST /run` takes `{"run_id"?, "input": {"question"?, "region"?, "year"?, "max_plumes"?, "plume_ids"?}, "options": {"sample_mode"?}}` and returns `{run_id, status, output: {summary, dossiers, rollup, review_queue, sources}, agents, trace_id, log_file, execution_time_seconds}`. Errors come back as `{"status":"error","error":{"code","message"}}`. Other endpoints: `GET /health`, `GET /api/runs`, `GET /api/runs/:id`, `/trace`, `/verify`, `POST /api/signoff`, `GET|POST /api/labels`.
+`POST /run` takes `{"run_id"?, "input": {"question"?, "region"?, "year"?, "max_plumes"?, "plume_ids"?}, "options": {"sample_mode"?}}` and returns `{run_id, status, output: {summary, dossiers, rollup, review_queue, sources}, agents, trace_id, log_file, execution_time_seconds}`. Errors come back as `{"status":"error","error":{"code","message"}}`. Other endpoints: `GET /health`; `GET /api/status` (engine status, never secrets), `/api/stats`, `/api/geo`, `/api/examples`; `GET /api/run/stream` (server-sent events with trace lines and progress while a run executes, one run at a time); `GET /api/runs`, `/api/runs/:id`, `/api/runs/:id/trace`, `/api/runs/:id/verify`; `POST /api/signoff`; `GET|POST /api/labels`, `GET /api/label/queue`. Pages: `/`, `/app`, `/label`, `/deck`.
 
 ## Eval
 
@@ -217,7 +258,9 @@ See `data/README.md`. Carbon Mapper data is used under its non-commercial terms 
 
 - `vendor/world-model/`: the Meterless World Model reference implementation and conformance suite (Apache-2.0), vendored unmodified with `degit` from github.com/meterless/meterless.
 - `vendor/scout-intent/`: Scout Intent spec (Apache-2.0), used for the contract format only.
-- npm: `tsx`, `typescript`, `@types/node`. All SkyLedger code was written during the build window (Oct 22–27, 2026).
+- Open-source npm packages: `tsx`, `typescript`, `@types/node`, `three`, `gsap`, `lenis` and `@fontsource` fonts.
+- Public data cached on 2026-10-26: Carbon Mapper and US EPA GHGRP RY2023 (see `data/README.md`).
+- Planning documents were written from Oct 21 to 24, 2026. All SkyLedger product code was written during the build window (Oct 22–27, 2026).
 
 ## Repo layout
 
@@ -234,6 +277,8 @@ config/          skyledger.json (thresholds, models, limits) and regions/<id>.js
 data/sample/     cached public data + images (data/README.md)
 eval/            run_eval.ts, labels.csv, results.md
 scripts/         cache_data.ts, export_zetaris_csv.ts, verify_trace.ts
+docs/            setup guides, deck PDF, submission text, evidence, Meterless vision issue report
+vendor/          Meterless World Model reference engine and Scout Intent spec (unmodified)
 input_examples/  output_examples/  logs/
 run.ts  Dockerfile  metadata.json  .env.example
 ```
