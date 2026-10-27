@@ -71,6 +71,11 @@ const $ = (sel, el = document) => el.querySelector(sel);
 const $$ = (sel, el = document) => Array.from(el.querySelectorAll(sel));
 const fmt = (n) => (typeof n === "number" && isFinite(n) ? Math.round(n).toLocaleString("en-US") : null);
 const isNum = (n) => typeof n === "number" && isFinite(n);
+const fmtKm = (m) => {
+  if (!isNum(m)) return null;
+  const km = m / 1000;
+  return `${Number.isInteger(km) ? String(km) : String(Number(km.toFixed(1)))} km`;
+};
 const WORDS = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve"];
 const word = (n, cap) => { const w = WORDS[n] ?? String(n); return cap ? w[0].toUpperCase() + w.slice(1) : w; };
 const get = (obj, path) => path.split(".").reduce((o, k) => (o == null ? undefined : o[k]), obj);
@@ -261,6 +266,14 @@ function buildResult(f, year) {
 function buildEvidence(stats) {
   const okStats = !!(stats && stats.data && stats.run && stats.eval && stats.eval.label_free);
   group("stats", okStats);
+  const farKm = stats && stats.eval ? fmtKm(stats.eval.far_m) : null;
+  if (farKm) setBind("farKm", farKm);
+  else {
+    for (const el of $$('[data-bind="farKm"]')) {
+      const wrap = el.closest(".counter") || el;
+      wrap.classList.add("dg", "missing");
+    }
+  }
   if (okStats) {
     for (const el of $$("[data-count]")) {
       const v = get(stats, el.dataset.count);

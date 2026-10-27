@@ -163,7 +163,7 @@ td:first-child { color: var(--ink); font-weight: 600; white-space: nowrap; }
     <div class="card"><div class="num" data-k="data.sources">—</div><p>satellite methane sources in the scan area</p></div>
     <div class="card"><div class="num" data-k="run.plumes">—</div><p>plumes analysed end to end by the agents</p></div>
     <div class="card"><div class="num accent" data-k="run.summary.unreported_source">—</div><p>plumes with no reporting facility at the plume head</p></div>
-    <div class="card"><div class="num cy" data-k="eval.label_free.nearest_blames_over_1km">—</div><p>cases where nearest-facility matching blames a plant more than 1 km away</p></div>
+    <div class="card"><div class="num cy" data-k="eval.label_free.nearest_blames_over_1km">—</div><p>cases where nearest-facility matching blames a plant more than <span id="far-km"></span> away</p></div>
   </div>
   <div class="card" style="margin-top: 28px; display: flex; align-items: center; gap: 60px">
     <div><div class="num" style="color: var(--muted)" data-k="eval.label_free.naive_discrepancy_flags">—</div><p>discrepancies a naive baseline would flag</p></div>
@@ -265,6 +265,11 @@ td:first-child { color: var(--ink); font-weight: 600; white-space: nowrap; }
 <script type="module">
 // Numbers come from the same API as the product; nothing on the evidence slide is typed in.
 const get = (o, path) => path.split(".").reduce((x, k) => (x == null ? x : x[k]), o);
+const fmtKm = (m) => {
+  if (!(typeof m === "number" && isFinite(m))) return null;
+  const km = m / 1000;
+  return `${Number.isInteger(km) ? String(km) : String(Number(km.toFixed(1)))} km`;
+};
 try {
   const s = await (await fetch("/api/stats")).json();
   for (const el of document.querySelectorAll("[data-k]")) {
@@ -272,6 +277,10 @@ try {
     if (v == null) { el.closest(".card")?.classList.add("missing"); continue; }
     el.textContent = Number(v).toLocaleString("en-US");
   }
+  const farEl = document.getElementById("far-km");
+  const farKm = fmtKm(s.eval?.far_m);
+  if (farEl && farKm) farEl.textContent = farKm;
+  else farEl?.closest(".card")?.classList.add("missing");
   document.getElementById("ev-scope").textContent = `· run ${s.run?.run_id ?? ""}, ${s.data?.region ?? ""}, GHGRP RY${s.data?.ghgrp_year ?? ""}`;
 } catch { document.querySelectorAll("[data-k]").forEach((el) => el.closest(".card")?.classList.add("missing")); }
 // On screen, scale slides to the window width.

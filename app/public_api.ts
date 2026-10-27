@@ -48,6 +48,7 @@ export function statsPayload() {
   const dossiers: any[] = run?.output?.dossiers ?? [];
   const inconsistent = dossiers.filter((x) => x.verdict === "inconsistent_with_report" && x.ratio);
   const featured = inconsistent.sort((a, b) => b.ratio[0] - a.ratio[0])[0] ?? null;
+  const far_m = config.settings.attribution.no_reporter_beyond_m;
   return {
     data: {
       sources: d.sources.length,
@@ -57,7 +58,7 @@ export function statsPayload() {
       ghgrp_year: d.manifest.ghgrp_year ?? null,
     },
     run: run ? { run_id: run.run_id, plumes: dossiers.length, summary: run.output.summary, seconds: run.execution_time_seconds, sql_live: run.sql_live, models_live: run.models_live } : null,
-    eval: evalRes ? { label_free: evalRes.label_free, labelled: evalRes.labelled, ambiguous: evalRes.ambiguous, baseline_a: evalRes.baseline_a, baseline_b: evalRes.baseline_b, skyledger: evalRes.skyledger } : null,
+    eval: { ...(evalRes ? { label_free: evalRes.label_free, labelled: evalRes.labelled, ambiguous: evalRes.ambiguous, baseline_a: evalRes.baseline_a, baseline_b: evalRes.baseline_b, skyledger: evalRes.skyledger } : {}), far_m },
     agents: run?.agents ?? [],
     featured: featured && {
       plume_id: featured.plume.plume_id,
