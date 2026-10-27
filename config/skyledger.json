@@ -1,0 +1,66 @@
+{
+  "$comment": "SkyLedger defaults. Every value here can be overridden by an environment variable named in its '_env' sibling. Secrets never go in this file; they live in .env.",
+
+  "default_region": "permian",
+  "default_region_env": "SKYLEDGER_REGION",
+
+  "ch4_gwp_by_reporting_year": {
+    "$comment": "GWP GHGRP uses to report CH4 as CO2e. AR4 = 25 up to RY2023; the April 2024 Table A-1 amendments (89 FR 31802) moved CH4 to AR5 = 28 from RY2024. RY2023 was verified against the published data (data/README.md).",
+    "2010": 25, "2011": 25, "2012": 25, "2013": 25, "2014": 25, "2015": 25, "2016": 25, "2017": 25,
+    "2018": 25, "2019": 25, "2020": 25, "2021": 25, "2022": 25, "2023": 25, "2024": 28, "2025": 28
+  },
+
+  "attribution": {
+    "$comment": "PlumeReader and Skeptic geometry. GHGRP coordinates can sit hundreds of metres from the emitting equipment.",
+    "at_origin_m": 400,
+    "upwind_max_m": 1000,
+    "wind_cone_deg": 60,
+    "calm_wind_ms": 1.5,
+    "initial_search_radius_m": 1500,
+    "max_search_radius_m": 3000,
+    "rival_radius_m": 2000,
+    "no_reporter_beyond_m": 1000,
+    "basin_rival_radius_m": 2000
+  },
+
+  "reconciliation": {
+    "$comment": "Implied annual range = (rate -/+ 1 sigma) x hours-per-year / 1000 x persistence (observed in the window .. 1.0).",
+    "default_relative_uncertainty": 0.3,
+    "window_months_before_year": 6,
+    "window_months_after_year": 6,
+    "min_detections_in_window": 2,
+    "max_relative_uncertainty": 1.0
+  },
+
+  "vision": {
+    "$comment": "Advisory only: measured agreement with the wind on the 60-plume live run was 24/64 (38%) against ~33% for chance, so a disagreement never downgrades a case on its own.",
+    "advisory": true,
+    "agree_boost": 0.1
+  },
+
+  "run": {
+    "default_max_plumes": 20,
+    "max_plumes": 60,
+    "max_review_loops": 4,
+    "model_concurrency": 4,
+    "model_concurrency_env": "SKYLEDGER_MODEL_CONCURRENCY",
+    "live_max_plumes": 20,
+    "live_max_plumes_env": "SKYLEDGER_LIVE_MAX_PLUMES"
+  },
+
+  "providers": {
+    "$comment": "AI_PROVIDER picks where model calls go: nightshift (Meterless Nightshift, the default), nvidia (NVIDIA API directly, e.g. for hosting), none (deterministic fallbacks only). Model ids per role; each can be overridden by the env var named in *_env.",
+    "default": "nightshift",
+    "default_env": "AI_PROVIDER",
+    "nightshift": {
+      "reporter": "nvidia/nemotron-3.5-lightning-30b-a3b", "reporter_env": "METERLESS_MODEL_REASONING",
+      "vision": "openrouter/nvidia/nemotron-3.5-super-vl:free", "vision_env": "METERLESS_MODEL_VISION",
+      "general": "meterless/auto", "general_env": "METERLESS_MODEL"
+    },
+    "nvidia": {
+      "reporter": "nvidia/nemotron-3.5-lightning-30b-a3b", "reporter_env": "NVIDIA_TEXT_MODEL",
+      "vision": "nvidia/nemotron-3.5-super-vl-120b-a12b", "vision_env": "NVIDIA_VISION_MODEL",
+      "general": "nvidia/nemotron-3.5-lightning-30b-a3b", "general_env": "NVIDIA_TEXT_MODEL"
+    }
+  }
+}

@@ -6,8 +6,8 @@ import { zetarisSql } from "../app/adapters/zetaris.ts";
 import { config, hasZetaris } from "../app/config.ts";
 import { sampleData } from "../app/adapters/sample_data.ts";
 
-const DB = "skyledger";
-const DIR = "/home/zetaris/customer-data/shared/skyledger";
+const DB = config.region.zetaris.database;
+const DIR = config.region.zetaris.container_dir;
 const TABLES = [
   { name: "cm_sources", expect: () => sampleData().sources.length },
   { name: "ghgrp_facilities", expect: () => sampleData().facilities.length },
@@ -30,7 +30,7 @@ async function main() {
   if (!hasZetaris()) throw new Error("Set ZETARIS_API_KEY in .env first");
   console.log(`Zetaris at ${config.zetaris.restUrl}`);
   await step("SELECT 1");
-  await step(`CREATE LIGHTNING DATABASE ${DB} DESCRIBE BY "SkyLedger-CarbonMapper-methane-and-EPA-GHGRP-RY2023"`, true);
+  await step(`CREATE LIGHTNING DATABASE ${DB} DESCRIBE BY "SkyLedger-${config.region.id}-CarbonMapper-methane-and-EPA-GHGRP-RY${config.ghgrpYear}"`, true);
   for (const t of TABLES) {
     let ok = false;
     for (const path of [`file://${DIR}/${t.name}.csv`, `${DIR}/${t.name}.csv`]) {

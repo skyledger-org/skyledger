@@ -2,13 +2,14 @@
 //   npx tsx run.ts                          HTTP server on 0.0.0.0:$PORT (POST /run, UI at /)
 //   npx tsx run.ts --once [input.json]      one run from the CLI, JSON result on stdout's last line
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
-import { readFileSync, existsSync, writeFileSync, readdirSync, mkdirSync } from "node:fs";
+import { readFileSync, existsSync, writeFileSync, readdirSync, mkdirSync, statSync } from "node:fs";
 import { join, normalize, extname } from "node:path";
 import { randomBytes } from "node:crypto";
 import { config, DATA_DIR, LOG_DIR, ROOT } from "./app/config.ts";
 import { run } from "./app/orchestrator.ts";
 import { issueContract, verifyContract } from "./app/agents/signoff.ts";
 import { verifyTrace, Tracer } from "./app/tracing.ts";
+import { geoPayload, statsPayload } from "./app/public_api.ts";
 
 const LABELS_FILE = join(ROOT, "eval", "labels.csv");
 function readLabels(): Record<string, { label: string; labeled_at: string }> {
@@ -39,21 +40,48 @@ async function readBody(req: IncomingMessage): Promise<any> {
   return raw ? JSON.parse(raw) : {};
 }
 
-const MIME: Record<string, string> = { ".html": "text/html; charset=utf-8", ".png": "image/png", ".js": "text/javascript", ".css": "text/css", ".json": "application/json" };
+const MIME: Record<string, string> = {
+  ".html": "text/html; charset=utf-8", ".png": "image/png", ".jpg": "image/jpeg", ".webp": "image/webp", ".svg": "image/svg+xml",
+  ".js": "text/javascript", ".mjs": "text/javascript", ".css": "text/css", ".json": "application/json",
+  ".woff2": "font/woff2", ".glsl": "text/plain",
+};
 
-function serveFile(res: ServerResponse, base: string, rel: string) {
-  const p = normalize(join(base, rel));
-  if (!p.startsWith(normalize(base)) || !existsSync(p)) return err(res, 404, "not_found", rel);
-  send(res, 200, readFileSync(p), MIME[extname(p)] ?? "application/octet-stream");
+function serveFile(res: ServerResponse, base: string, rel: string, cache = false) {
+  const p = normalize(join(base, decodeURIComponent(rel)));
+  if (!p.startsWith(normalize(base)) || !existsSync(p) || !statSync(p).isFile()) return err(res, 404, "not_found", rel);
+  res.writeHead(200, { "Content-Type": MIME[extname(p)] ?? "application/octet-stream", "Cache-Control": cache ? "public, max-age=86400" : "no-store" });
+  res.end(readFileSync(p));
 }
+
+// Front-end libraries are served from node_modules, so the site works offline and in Docker with no CDN.
+const NM = join(ROOT, "node_modules");
+const VENDOR: Record<string, string> = {
+  three: join(NM, "three"),
+  gsap: join(NM, "gsap", "dist"),
+  lenis: join(NM, "lenis", "dist"),
+  "font-inter": join(NM, "@fontsource-variable", "inter"),
+  "font-space-grotesk": join(NM, "@fontsource-variable", "space-grotesk"),
+  "font-jetbrains-mono": join(NM, "@fontsource", "jetbrains-mono"),
+};
 
 async function handle(req: IncomingMessage, res: ServerResponse) {
   const url = new URL(req.url ?? "/", "http://localhost");
   const path = url.pathname;
   try {
-    if (req.method === "GET" && (path === "/" || path === "/index.html")) return serveFile(res, join(ROOT, "web"), "index.html");
+    if (req.method === "GET" && (path === "/" || path === "/index.html")) return serveFile(res, join(ROOT, "web", "landing"), "index.html");
+    if (req.method === "GET" && (path === "/app" || path === "/app/")) return serveFile(res, join(ROOT, "web", "app"), "index.html");
+    if (req.method === "GET" && path.startsWith("/app/")) return serveFile(res, join(ROOT, "web", "app"), path.slice(5));
+    if (req.method === "GET" && path.startsWith("/landing/")) return serveFile(res, join(ROOT, "web", "landing"), path.slice(9));
+    if (req.method === "GET" && path.startsWith("/vendor/")) {
+      const [, , lib, ...rest] = path.split("/");
+      if (!VENDOR[lib]) return err(res, 404, "not_found", path);
+      if (lib === "three" && !/^(build|examples\/jsm)\//.test(rest.join("/"))) return err(res, 404, "not_found", path);
+      return serveFile(res, VENDOR[lib], rest.join("/"), true);
+    }
     if (req.method === "GET" && path === "/health") return send(res, 200, { status: "ok", sample_mode: config.sampleMode });
-    if (req.method === "GET" && path.startsWith("/images/")) return serveFile(res, join(DATA_DIR, "images"), path.slice(8));
+    if (req.method === "GET" && path.startsWith("/images/")) return serveFile(res, join(DATA_DIR, "images"), path.slice(8), true);
+    if (req.method === "GET" && path === "/api/geo") return send(res, 200, geoPayload());
+    if (req.method === "GET" && path === "/api/stats") return send(res, 200, statsPayload());
 
     if (req.method === "POST" && path === "/run") {
       const body = await readBody(req);

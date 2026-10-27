@@ -1,10 +1,14 @@
 // Skeptic: a discrepancy is only reported if all five rival explanations are ruled out or flagged.
 // Every test is a query result or a geometric check; the Skeptic never decides on LLM judgement alone.
 // It has role authority: it can send work back (GeoLinker, PlumeReader, Reconciler) or block the Reporter.
+import { config } from "../config.ts";
 import type { AgentContext } from "./context.ts";
 import type { PlumeCase, Rival, Verdict } from "../state.ts";
 
-export const MAX_RADIUS_M = 3000;
+// Thresholds come from config/skyledger.json (attribution.*, reconciliation.*).
+const A = () => config.settings.attribution;
+const R = () => config.settings.reconciliation;
+export const maxRadiusM = () => A().max_search_radius_m;
 
 export type SkepticDecision =
   | { action: "send_back"; target: "GeoLinker" | "PlumeReader" | "Reconciler"; reason: string; mode?: "no_annualization" }
@@ -21,7 +25,7 @@ export function skepticReview(ctx: AgentContext, c: PlumeCase, iteration: { pr: 
   // R5 data quality
   const relUnc = p.emission_kgph && p.emission_uncertainty_kgph ? p.emission_uncertainty_kgph / p.emission_kgph : null;
   if (p.emission_kgph == null || p.emission_kgph <= 0) rivals.push(rival("R5", "Data quality", "failed", "no quantified emission rate for this source"));
-  else if (relUnc != null && relUnc > 1) rivals.push(rival("R5", "Data quality", "failed", `uncertainty ${Math.round(relUnc * 100)}% of rate`));
+  else if (relUnc != null && relUnc > R().max_relative_uncertainty) rivals.push(rival("R5", "Data quality", "failed", `uncertainty ${Math.round(relUnc * 100)}% of rate`));
   else if (p.wind_direction_deg == null) rivals.push(rival("R5", "Data quality", "flagged", "no wind estimate; attribution relies on distance only"));
   else rivals.push(rival("R5", "Data quality", "ruled_out", `rate ${Math.round(p.emission_kgph)} kg/h, uncertainty ${relUnc == null ? "n/a" : Math.round(relUnc * 100) + "%"}, wind present`));
   if (rivals[0].status === "failed") {
@@ -32,13 +36,13 @@ export function skepticReview(ctx: AgentContext, c: PlumeCase, iteration: { pr: 
 
   // No candidate at all: widen the search before concluding anything.
   if (c.candidates.length === 0) {
-    if (c.radius_m < MAX_RADIUS_M) {
-      log("request_wider_search", "needs_revision", `No oil & gas facility within ${c.radius_m} m; GeoLinker must widen to ${MAX_RADIUS_M} m`, "GeoLinker", 0.5);
-      return { action: "send_back", target: "GeoLinker", reason: `widen radius to ${MAX_RADIUS_M} m` };
+    if (c.radius_m < maxRadiusM()) {
+      log("request_wider_search", "needs_revision", `No oil & gas facility within ${c.radius_m} m; GeoLinker must widen to ${maxRadiusM()} m`, "GeoLinker", 0.5);
+      return { action: "send_back", target: "GeoLinker", reason: `widen radius to ${maxRadiusM()} m` };
     }
-    rivals.push(rival("R3", "Not a GHGRP reporter", "flagged", `no GHGRP oil & gas reporter within ${MAX_RADIUS_M} m`));
+    rivals.push(rival("R3", "Not a GHGRP reporter", "flagged", `no GHGRP oil & gas reporter within ${maxRadiusM()} m`));
     c.rivals = rivals;
-    log("test_rival_R3", "blocked", `Unreported source: no GHGRP reporter within ${MAX_RADIUS_M} m; no ratio possible`, "Reporter", 0.8);
+    log("test_rival_R3", "blocked", `Unreported source: no GHGRP reporter within ${maxRadiusM()} m; no ratio possible`, "Reporter", 0.8);
     return { action: "decide", verdict: "unreported_source" };
   }
 
@@ -53,7 +57,7 @@ export function skepticReview(ctx: AgentContext, c: PlumeCase, iteration: { pr: 
 
   // R1 misattribution
   const pr = c.plume_reader!;
-  const others = points.filter((k) => pr.consistent.includes(k.facility_id) && k.facility_id !== c.attributed?.facility_id && k.dist_m <= 2000);
+  const others = points.filter((k) => pr.consistent.includes(k.facility_id) && k.facility_id !== c.attributed?.facility_id && k.dist_m <= A().rival_radius_m);
   const canReread = pr.mode === "vision" && iteration.pr < 1;
   if (!c.attributed || pr.confidence < 0.5 || others.length) {
     const why = !c.attributed ? "no candidate consistent with plume origin and wind" : others.length ? `rival source ${others[0].facility_name} (${others[0].dist_m} m) also consistent` : `PlumeReader confidence ${pr.confidence.toFixed(2)}`;
@@ -63,15 +67,15 @@ export function skepticReview(ctx: AgentContext, c: PlumeCase, iteration: { pr: 
     }
     // Nothing reporting sits at the plume head: blaming the nearest plant would be a false flag.
     const nearestPoint = points[0];
-    if (!c.attributed && nearestPoint.dist_m > 1000) {
+    if (!c.attributed && nearestPoint.dist_m > A().no_reporter_beyond_m) {
       rivals.push(rival("R1", "Misattribution", "ruled_out", `nearest reporting point facility ${nearestPoint.facility_name} is ${nearestPoint.dist_m} m from the plume head: not the source`));
-      rivals.push(rival("R3", "Not a GHGRP reporter", "flagged", "no GHGRP point facility within 1 km of the plume head; likely well-site or gathering equipment reported only at basin level, or not reported"));
+      rivals.push(rival("R3", "Not a GHGRP reporter", "flagged", `no GHGRP point facility within ${A().no_reporter_beyond_m} m of the plume head; likely well-site or gathering equipment reported only at basin level, or not reported`));
       c.rivals = rivals;
       log("test_rival_R3", "blocked", `Unreported source: nearest reporting facility ${nearestPoint.dist_m} m away; a nearest-facility match would wrongly blame ${nearestPoint.facility_name}`, "Reporter", 0.8);
       return { action: "decide", verdict: "unreported_source" };
     }
-    if (!c.attributed && c.radius_m < MAX_RADIUS_M) {
-      log("test_rival_R1", "needs_revision", `Rival: ${why}. Widening search to ${MAX_RADIUS_M} m`, "GeoLinker", 0.45);
+    if (!c.attributed && c.radius_m < maxRadiusM()) {
+      log("test_rival_R1", "needs_revision", `Rival: ${why}. Widening search to ${maxRadiusM()} m`, "GeoLinker", 0.45);
       return { action: "send_back", target: "GeoLinker", reason: why };
     }
     rivals.push(rival("R1", "Misattribution", "failed", why));
@@ -82,10 +86,10 @@ export function skepticReview(ctx: AgentContext, c: PlumeCase, iteration: { pr: 
   const ruledOut = points.filter((k) => pr.inconsistent.includes(k.facility_id));
   // Wells and gathering lines report only at basin level, so they never appear as nearby points.
   // If the attributed facility isn't right at the origin, they stay a live rival: flag, don't rule out.
-  const basinOps = c.candidates.filter((k) => k.kind === "basin_aggregate" && k.dist_m <= 2000);
-  const offOrigin = c.attributed.dist_m > 400;
+  const basinOps = c.candidates.filter((k) => k.kind === "basin_aggregate" && k.dist_m <= A().basin_rival_radius_m);
+  const offOrigin = c.attributed.dist_m > A().at_origin_m;
   const r1Note = [
-    ruledOut.length ? `${ruledOut.map((k) => `${k.facility_name} (${k.dist_m} m)`).join(", ")} ruled out by plume geometry (downwind of, or too far from, the plume head)` : `no other consistent point facility within 2 km`,
+    ruledOut.length ? `${ruledOut.map((k) => `${k.facility_name} (${k.dist_m} m)`).join(", ")} ruled out by plume geometry (downwind of, or too far from, the plume head)` : `no other consistent point facility within ${A().rival_radius_m} m`,
     offOrigin && basinOps.length ? `origin is ${c.attributed.dist_m} m from ${c.attributed.facility_name}; well-site equipment reported only at basin level (${basinOps.map((k) => k.facility_name).join(", ")}) cannot be excluded` : "",
   ].filter(Boolean).join("; ");
   rivals.push(rival("R1", "Misattribution", offOrigin && basinOps.length ? "flagged" : "ruled_out", r1Note));
@@ -120,7 +124,7 @@ export function skepticReview(ctx: AgentContext, c: PlumeCase, iteration: { pr: 
   // R2 intermittency, measured only inside the reporting-year window
   const w = p.window;
   const seen = `seen on ${w.detections} of ${w.observations} overpass dates in ${w.from}..${w.to} (${p.detection_date_count} of ${p.observation_date_count} all-time)`;
-  if (w.detections < 2) {
+  if (w.detections < R().min_detections_in_window) {
     rivals.push(rival("R2", "Intermittency", "failed", seen));
     c.rivals = rivals;
     if (c.implied_tch4 && iteration.rc < 1) {

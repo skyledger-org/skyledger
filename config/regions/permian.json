@@ -1,0 +1,24 @@
+{
+  "$comment": "One file per region. scripts/cache_data.ts reads this to fetch and cache the region; the app reads it to load the cache. Add a region by adding a file.",
+  "id": "permian",
+  "name": "Permian Basin (TX/NM)",
+  "bbox": { "west": -104.5, "south": 30.5, "east": -101.0, "north": 33.5 },
+  "states": ["TX", "NM"],
+  "reporting_year": 2023,
+  "reporting_years_available": [2023],
+  "ipcc_sector": "1B2",
+  "data_dir": "data/sample",
+  "cache": {
+    "$comment": "How many Carbon Mapper sources near a GHGRP facility get a detailed plume record and image, by case type.",
+    "max_detailed_sources": 60,
+    "multi_candidate": 25,
+    "persistent": 25,
+    "single_sighting": 10,
+    "near_facility_m": 3000
+  },
+  "zetaris": {
+    "database": "skyledger",
+    "tables": { "plumes": "skyledger.cm_sources", "facilities": "skyledger.ghgrp_facilities", "ch4": "skyledger.ghgrp_ch4" },
+    "container_dir": "/home/zetaris/customer-data/shared/skyledger"
+  }
+}

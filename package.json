@@ -28,6 +28,12 @@
   "type": "module",
   "private": true,
   "dependencies": {
+    "@fontsource-variable/inter": "^5.1.0",
+    "@fontsource-variable/space-grotesk": "^5.1.0",
+    "@fontsource/jetbrains-mono": "^5.1.0",
+    "gsap": "^3.12.5",
+    "lenis": "^1.1.13",
+    "three": "^0.170.0",
     "tsx": "^4.23.15"
   },
   "engines": {

@@ -34,6 +34,8 @@ const sha = (s: string) => createHash("sha256").update(s).digest("hex");
 export class Tracer {
   readonly file: string;
   readonly lines: TraceLine[] = [];
+  /** Optional live listener (the console streams trace lines over server-sent events). */
+  onLine: ((line: TraceLine) => void) | null = null;
   private prev = "0".repeat(64);
 
   constructor(readonly runId: string, private echo = true) {
@@ -63,6 +65,7 @@ export class Tracer {
     const line: TraceLine = { ...body, hash };
     this.prev = hash;
     this.lines.push(line);
+    try { this.onLine?.(line); } catch { /* a listener must never break the run */ }
     const text = JSON.stringify(line);
     appendFileSync(this.file, text + "\n");
     if (this.echo) process.stdout.write(text + "\n");

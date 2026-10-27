@@ -7,7 +7,8 @@ import { config } from "../config.ts";
 import type { AgentContext } from "./context.ts";
 import type { PlumeCase } from "../state.ts";
 
-const KGPH_TO_TPY = 8.76;
+// kg/h sustained for a year, in tonnes: 24 x 365 / 1000 = 8.76 (a unit identity, not a tunable).
+const KGPH_TO_TPY = (24 * 365) / 1000;
 const r2 = (x: number) => Math.round(x * 100) / 100;
 
 export function reconcile(ctx: AgentContext, c: PlumeCase, mode: "annualize" | "no_annualization" = "annualize") {
@@ -19,7 +20,7 @@ export function reconcile(ctx: AgentContext, c: PlumeCase, mode: "annualize" | "
     c.ratio = null;
     return;
   }
-  const sigma = p.emission_uncertainty_kgph ?? rate * 0.3;
+  const sigma = p.emission_uncertainty_kgph ?? rate * config.settings.reconciliation.default_relative_uncertainty;
   const w = p.window;
   const persistence = w.observations > 0 ? w.detections / w.observations : 0;
   if (mode === "no_annualization") {

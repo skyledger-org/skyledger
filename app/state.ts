@@ -117,4 +117,5 @@ export interface RunState {
   cases: PlumeCase[];
   review_queue: { kind: string; detail: string }[];
   started_at: number;
+  engines?: { sql: string; models: string; models_detail: string };
 }

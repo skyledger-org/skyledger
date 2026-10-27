@@ -1,7 +1,7 @@
 // Reporter: writes the draft dossier. Facts come from RunState; the model only words them.
 // Guarded vocabulary: "inconsistent with available data", never accusations. A deterministic guard
 // rejects accusatory wording from any model output and falls back to the template.
-import { chat } from "../adapters/meterless.ts";
+import { textChat } from "../adapters/llm.ts";
 import { config } from "../config.ts";
 import type { AgentContext } from "./context.ts";
 import type { PlumeCase } from "../state.ts";
@@ -64,7 +64,7 @@ export async function report(ctx: AgentContext, c: PlumeCase) {
     try {
       // Pre-formatted, unit-labelled facts: the model words them, it never computes or converts.
       const f = facts(c, year);
-      const r = await chat(config.meterless.modelReasoning, [
+      const r = await textChat("reporter", [
         { role: "system", content: "You write a two-sentence draft finding for an ESG credit analyst. Copy every number exactly as written in the facts, with its unit; do not compute, convert or round anything. Say 'inconsistent with available data'; never allege fraud, intent or violations. Give the annual figures as ranges." },
         { role: "user", content: Object.entries(f).map(([k, v]) => `${k}: ${v}`).join("\n") },
       ], { maxTokens: 220 });
@@ -75,7 +75,7 @@ export async function report(ctx: AgentContext, c: PlumeCase) {
         ctx.tracer.log({ agent_name: "Reporter", action: "number_guard_block", plume_id: c.plume.plume_id, status: "blocked", input_summary: "model draft", output_summary: `numbers not in the computed facts (${stray.slice(0, 5).join(", ")}); using guarded template`, data: { draft: r.text.slice(0, 400) } });
       } else if (r.text.trim()) {
         text = r.text.trim();
-        how = `${r.model}${r.receipt ? ` (receipt ${r.receipt})` : ""}`;
+        how = `${r.requested_model} via ${r.route}${r.model !== r.requested_model ? ` (echo ${r.model})` : ""}${r.receipt ? ` (receipt ${r.receipt})` : ""}`;
       }
     } catch (e) {
       ctx.tracer.log({ agent_name: "Reporter", action: "model_call", plume_id: c.plume.plume_id, status: "fallback", input_summary: "Nemotron via Meterless", output_summary: `failed (${(e as Error).message}); template used` });

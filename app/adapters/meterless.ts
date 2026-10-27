@@ -105,18 +105,19 @@ export const isVisionRefusal = (e: unknown) => /no_vision_model|no configured vi
  * Direct NVIDIA API call, used ONLY for the image step when Nightshift refuses it (isVisionRefusal).
  * Same OpenAI shape; thinking is switched off through chat_template_kwargs as NVIDIA documents for Nemotron.
  */
-export async function nvidiaDirectChat(messages: { role: "system" | "user" | "assistant"; content: Content }[], opts: { maxTokens?: number } = {}): Promise<ChatResult> {
+export async function nvidiaDirectChat(messages: { role: "system" | "user" | "assistant"; content: Content }[], opts: { maxTokens?: number; model?: string; temperature?: number } = {}): Promise<ChatResult> {
+  const model = opts.model ?? config.nvidia.visionModel;
   if (!config.nvidia.apiKey.startsWith("nvapi-")) throw new Error("NVIDIA direct: NVIDIA_API_KEY is not set");
   const t0 = Date.now();
   const res = await fetch(`${config.nvidia.baseUrl}/chat/completions`, {
     method: "POST",
     headers: { Authorization: `Bearer ${config.nvidia.apiKey}`, "Content-Type": "application/json", Accept: "application/json" },
-    body: JSON.stringify({ model: config.nvidia.visionModel, messages, max_tokens: opts.maxTokens ?? 400, temperature: 0.6, top_p: 0.95, chat_template_kwargs: { enable_thinking: false } }),
+    body: JSON.stringify({ model, messages, max_tokens: opts.maxTokens ?? 400, temperature: opts.temperature ?? 0.6, top_p: 0.95, chat_template_kwargs: { enable_thinking: false } }),
     signal: AbortSignal.timeout(config.nvidia.timeoutMs),
   });
   if (!res.ok) throw new Error(`NVIDIA ${res.status}: ${(await res.text()).slice(0, 200)}`);
   const body: any = await res.json();
-  return { text: body?.choices?.[0]?.message?.content ?? "", model: body?.model ?? config.nvidia.visionModel, ms: Date.now() - t0, receipt: body?.id ?? null };
+  return { text: body?.choices?.[0]?.message?.content ?? "", model: body?.model ?? model, ms: Date.now() - t0, receipt: body?.id ?? null };
 }
 
 export function imageDataUrl(relPath: string): string {

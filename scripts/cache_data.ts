@@ -1,16 +1,21 @@
 // Pulls a small, documented slice of public data for the Permian Basin into data/sample/.
 // This cache powers SAMPLE_MODE (no network, no credentials) and is what we register in Zetaris.
-// Usage: npm run cache            (SEC_USER_AGENT in .env enables the EDGAR pull)
+// Usage: npm run cache -- <region-id> [year]   e.g. npm run cache -- permian 2023
+//        Region settings (bbox, states, cache sizes, data_dir) come from config/regions/<region-id>.json.
+//        SEC_USER_AGENT in .env enables the EDGAR pull.
 import { mkdirSync, writeFileSync, existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
-const OUT = join(process.cwd(), "data", "sample");
+const REGION = JSON.parse(readFileSync(join(process.cwd(), "config", "regions", `${process.argv[2] ?? "permian"}.json`), "utf8"));
+const OUT = join(process.cwd(), REGION.data_dir);
 const IMG = join(OUT, "images");
 mkdirSync(IMG, { recursive: true });
 
-const BBOX = { west: -104.5, south: 30.5, east: -101.0, north: 33.5 }; // Permian Basin, TX/NM
-const YEAR = 2023; // latest GHGRP reporting year published on Envirofacts (RY2024 returns no rows as of 2026-10-26)
-const MAX_DETAILED_SOURCES = 60;
+const BBOX = REGION.bbox;
+// GHGRP reporting year. RY2023 is the latest on Envirofacts (RY2024 returned no rows on 2026-10-26).
+const YEAR = Number(process.argv[3] ?? REGION.reporting_year);
+const C = REGION.cache;
+const MAX_DETAILED_SOURCES = C.max_detailed_sources;
 const CM = "https://api.carbonmapper.org/api/v1/catalog";
 const EF = "https://data.epa.gov/efservice";
 
@@ -80,9 +85,9 @@ async function main() {
   });
   save("cm_sources.json", sources);
 
-  console.log(`2/5 EPA GHGRP facilities RY${YEAR} (TX, NM) in bbox`);
+  console.log(`2/5 EPA GHGRP facilities RY${YEAR} (${REGION.states.join(", ")}) in bbox`);
   const facilities: any[] = [];
-  for (const st of ["TX", "NM"]) {
+  for (const st of REGION.states as string[]) {
     const rows = await getJson(`${EF}/PUB_DIM_FACILITY/STATE/${st}/YEAR/${YEAR}/ROWS/0:5000/JSON`);
     for (const f of rows) {
       if (f.latitude == null || f.longitude == null) continue;
@@ -122,22 +127,22 @@ async function main() {
 
   console.log("4/5 Carbon Mapper plume details + images for sources near reporting facilities");
   const scored = sources
-    .filter((s: any) => s.sector === "1B2")
+    .filter((s: any) => s.sector === REGION.ipcc_sector)
     .map((s: any) => {
       const near = facilities
         .map((f) => ({ id: f.facility_id, d: haversineM(s.lat, s.lon, f.latitude, f.longitude) }))
-        .filter((x) => x.d < 3000)
+        .filter((x) => x.d < C.near_facility_m)
         .sort((a, b) => a.d - b.d);
       return { s, near };
     })
     .filter((x: any) => x.near.length > 0)
     // Prefer sources overflown within the reporting-year window (RY +/- 6 months), so comparisons are time-aligned.
-    .filter((x: any) => x.s.observation_dates.some((d: string) => d >= `${YEAR - 1}-07-01` && d <= `${YEAR + 1}-06-30`))
+    .filter((x: any) => x.s.observation_dates.some((d: string) => d >= `${YEAR - 1}-07-01` && d <= `${YEAR + 1}-06-30`)) // RY +/- 6 months, as config reconciliation.window_*
     // Mix: persistent emitters, single sightings (R2 traps) and multi-candidate cases (R1 traps).
     .sort((a: any, b: any) => (b.near.length > 1 ? 1 : 0) - (a.near.length > 1 ? 1 : 0) || b.s.emission_kgph - a.s.emission_kgph);
-  const multi = scored.filter((x: any) => x.near.length > 1).slice(0, 25);
-  const persistent = scored.filter((x: any) => x.near.length === 1 && x.s.detection_date_count >= 2).slice(0, 25);
-  const single = scored.filter((x: any) => x.near.length === 1 && x.s.detection_date_count < 2).slice(0, 10);
+  const multi = scored.filter((x: any) => x.near.length > 1).slice(0, C.multi_candidate);
+  const persistent = scored.filter((x: any) => x.near.length === 1 && x.s.detection_date_count >= 2).slice(0, C.persistent);
+  const single = scored.filter((x: any) => x.near.length === 1 && x.s.detection_date_count < 2).slice(0, C.single_sighting);
   const chosen = [...multi, ...persistent, ...single].slice(0, MAX_DETAILED_SOURCES);
   console.log(`  near-facility sources: ${scored.length}; chosen ${chosen.length} (multi ${multi.length}, persistent ${persistent.length}, single ${single.length})`);
 
@@ -186,7 +191,8 @@ async function main() {
 
   save("manifest.json", {
     fetched_at: fetchedAt,
-    region: "Permian Basin (TX/NM)",
+    region: REGION.name,
+    region_id: REGION.id,
     bbox: BBOX,
     ghgrp_year: YEAR,
     counts: { cm_sources: sources.length, cm_plumes: plumes.length, facilities: facilities.length, ch4_rows: emissions.length },
