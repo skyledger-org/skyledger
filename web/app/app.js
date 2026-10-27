@@ -154,7 +154,7 @@ function visibleDossiers() {
 function renderList() {
   const ds = visibleDossiers();
   $("#plumes").innerHTML = ds.map((d) => `<li class="pcard ${d.plume.plume_id === S.sel ? "on" : ""}" data-id="${esc(d.plume.plume_id)}" tabindex="0">
-      <span class="fac">${esc(d.attributed?.facility_name ?? d.candidates[0]?.facility_name ?? "No facility nearby")}</span>
+      <span class="fac">${esc((isBlind() ? null : d.attributed?.facility_name) ?? (d.candidates[0] ? `Near ${d.candidates[0].facility_name}` : "No facility nearby"))}</span>
       <span class="rate">${d.plume.emission_kgph == null ? "—" : fmt(d.plume.emission_kgph) + " kg/h"}</span>
       <span class="meta">${esc(d.plume.platform)} · ${esc(String(d.plume.scene_timestamp).slice(0, 10))}${S.labels[d.plume.plume_id] ? " · labelled" : ""}</span>
       <span class="badge v-${d.verdict}">${esc(VERDICT[d.verdict]?.label ?? d.verdict)}</span></li>`).join("") || `<li class="hint">${S.run ? "No plumes match." : "No run loaded. Pick a scenario or press Run the agents."}</li>`;
@@ -191,6 +191,7 @@ function fitBase() {
   const s = Math.min((w - 60) / spanX, (h - 60) / spanY);
   base = { s, ox: (w - spanX * s) / 2, oy: (h - spanY * s) / 2 };
 }
+const isBlind = () => document.body.classList.contains("blind");
 const toScreen = ([x, y]) => [x * view.k + view.x, y * view.k + view.y];
 function resize() {
   const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -236,7 +237,7 @@ function drawMap() {
   // analysed plumes
   for (const d of S.run?.output.dossiers ?? []) {
     const [x, y] = toScreen(project(d.plume.lon, d.plume.lat));
-    ctx.strokeStyle = VCOLOR[d.verdict] ?? "#fff"; ctx.lineWidth = 2;
+    ctx.strokeStyle = isBlind() ? "rgba(233,238,245,.7)" : VCOLOR[d.verdict] ?? "#fff"; ctx.lineWidth = 2;
     ctx.beginPath(); ctx.arc(x, y, 5.5, 0, 6.283); ctx.stroke();
   }
   // selection: candidate links + wind
@@ -245,8 +246,8 @@ function drawMap() {
     const [px, py] = toScreen(project(d.plume.lon, d.plume.lat));
     for (const c of d.candidates.slice(0, 6)) {
       const [fx, fy] = toScreen(project(c.longitude, c.latitude));
-      const isA = d.attributed?.facility_id === c.facility_id;
-      const out = d.plume_reader?.inconsistent?.includes(c.facility_id);
+      const isA = !isBlind() && d.attributed?.facility_id === c.facility_id;
+      const out = !isBlind() && d.plume_reader?.inconsistent?.includes(c.facility_id);
       ctx.strokeStyle = isA ? "#3ddc97" : out ? "rgba(255,107,107,0.8)" : "rgba(255,255,255,0.35)";
       ctx.setLineDash(isA ? [] : [4, 4]); ctx.lineWidth = isA ? 2 : 1;
       ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(fx, fy); ctx.stroke(); ctx.setLineDash([]);
@@ -299,7 +300,7 @@ canvas.addEventListener("pointerleave", () => ($("#map-tip").hidden = true));
 function hitTest(e) {
   const b = canvas.getBoundingClientRect(); const mx = e.clientX - b.left, my = e.clientY - b.top;
   let best = null, bd = 12;
-  for (const d of S.run?.output.dossiers ?? []) { const [x, y] = toScreen(project(d.plume.lon, d.plume.lat)); const dd = Math.hypot(x - mx, y - my); if (dd < bd) { bd = dd; best = { plume: d.plume.plume_id, html: `<b>${esc(d.attributed?.facility_name ?? "Analysed plume")}</b><br><span class="v-${d.verdict}">${esc(VERDICT[d.verdict]?.label)}</span> · ${fmt(d.plume.emission_kgph)} kg/h` }; } }
+  for (const d of S.run?.output.dossiers ?? []) { const [x, y] = toScreen(project(d.plume.lon, d.plume.lat)); const dd = Math.hypot(x - mx, y - my); if (dd < bd) { bd = dd; best = { plume: d.plume.plume_id, html: isBlind() ? `<b>Analysed plume</b><br>${fmt(d.plume.emission_kgph)} kg/h` : `<b>${esc(d.attributed?.facility_name ?? "Analysed plume")}</b><br><span class="v-${d.verdict}">${esc(VERDICT[d.verdict]?.label)}</span> · ${fmt(d.plume.emission_kgph)} kg/h` }; } }
   if (best) return best;
   bd = 8;
   for (const [lon, lat, kind, t, name] of S.geo.facilities) { const [x, y] = toScreen(project(lon, lat)); const dd = Math.hypot(x - mx, y - my); if (dd < bd) { bd = dd; best = { html: `<b>${esc(name)}</b><br>${kind === "basin_aggregate" ? "Basin-level report (location is representative)" : "EPA-reporting facility"}${t != null ? ` · reports ${fmt(t)} t CH₄` : ""}` }; } }
@@ -336,7 +337,7 @@ function renderDossier() {
   <div class="d-head">
     <div>
       <span class="badge v-${d.verdict}">${esc(v.label)}</span>
-      <div class="d-title">${esc(f?.facility_name ?? (d.candidates[0] ? `Nearest: ${d.candidates[0].facility_name}` : "No reporting facility nearby"))}</div>
+      <div class="d-title">${esc((isBlind() ? null : f?.facility_name) ?? (d.candidates[0] ? `Nearest: ${d.candidates[0].facility_name}` : "No reporting facility nearby"))}</div>
       <div class="d-sub mono">${esc(p.plume_id)} · ${esc(p.platform)} · ${esc(String(p.scene_timestamp).slice(0, 16).replace("T", " "))} UTC</div>
     </div>
     <span class="status-tag ${d.status === "shareable" ? "shareable" : ""}">${d.status === "shareable" ? "SIGNED · SHAREABLE" : "DRAFT · NOT SHAREABLE"}</span>
@@ -353,15 +354,15 @@ function renderDossier() {
   ${d.ratio ? ratioBar(d.ratio) : ""}
 
   <div class="two">
-    ${p.image ? `<figure class="plume-img"><canvas id="pimg"></canvas><figcaption>Carbon Mapper quicklook, north up. ✚ plume head · arrow: wind · <span style="color:#3ddc97">●</span> attributed · <span style="color:#ff6b6b">●</span> ruled out by geometry · ■ outside the image. Quicklooks are small (about 114 px), so the picture supports, but never decides, the attribution.</figcaption></figure>` : `<div class="explain">No quicklook image for this plume.</div>`}
+    ${p.image ? `<figure class="plume-img"><canvas id="pimg"></canvas><figcaption>Carbon Mapper quicklook, north up. ✚ plume origin estimate · arrow: wind (blows toward) · ${isBlind() ? "<span style=\"color:#46e0ff\">●</span> reporting facility · <span style=\"color:#9aa6bb\">●</span> basin-level report" : "<span style=\"color:#3ddc97\">●</span> attributed · <span style=\"color:#ff6b6b\">●</span> ruled out by geometry"} · ■ outside the image. Quicklooks are small (about 114 px), so the picture supports, but never decides, the attribution.</figcaption></figure>` : `<div class="explain">No quicklook image for this plume.</div>`}
     <div>
-      <div class="section" style="margin-top:0"><h3>Plume reading</h3><p class="muted" style="margin:0 0 8px">${esc(d.plume_reader?.verdict ?? "—")}</p>
+      <div class="section plume-reading" style="margin-top:0"><h3>Plume reading</h3><p class="muted" style="margin:0 0 8px">${esc(d.plume_reader?.verdict ?? "—")}</p>
       ${d.evidence.filter((e) => e.kind === "model").map((e) => `<p class="sm" style="color:var(--ink-2);margin:0 0 6px"><span class="src-tag">${esc(e.source)}</span>${esc(e.detail)}</p>`).join("")}</div>
-      ${d.owners.length ? `<div class="section"><h3>Who owns it <span class="muted sm" style="text-transform:none">· Meterless World Model</span></h3>${d.owners.map((o) => `<div style="margin-bottom:8px"><b>${esc(o.name)}</b>${o.pct != null ? ` <span class="muted">${o.pct}%</span>` : ""}${o.cik ? ` <span class="muted sm">CIK ${esc(o.cik)}</span>` : ""}<div class="muted sm">from “${esc(o.raw)}”${o.merged_from.length > 1 ? ` · merged spellings: ${o.merged_from.map(esc).join(" · ")}` : ""}${o.review ? " · in operator review" : ""}</div></div>`).join("")}</div>` : ""}
+      ${d.owners.length ? `<div class="section owners-sec"><h3>Who owns it <span class="muted sm" style="text-transform:none">· Meterless World Model</span></h3>${d.owners.map((o) => `<div style="margin-bottom:8px"><b>${esc(o.name)}</b>${o.pct != null ? ` <span class="muted">${o.pct}%</span>` : ""}${o.cik ? ` <span class="muted sm">CIK ${esc(o.cik)}</span>` : ""}<div class="muted sm">from “${esc(o.raw)}”${o.merged_from.length > 1 ? ` · merged spellings: ${o.merged_from.map(esc).join(" · ")}` : ""}${o.review ? " · in operator review" : ""}</div></div>`).join("")}</div>` : ""}
     </div>
   </div>
 
-  <div class="section"><h3>The Skeptic's five tests</h3><div class="rivals">${["R1", "R2", "R3", "R4", "R5"].map((id) => {
+  <div class="section rival-head"><h3>The Skeptic's five tests</h3><div class="rivals">${["R1", "R2", "R3", "R4", "R5"].map((id) => {
     const r = d.rivals.find((x) => x.id === id);
     const st = r?.status ?? "pending";
     const ic = st === "ruled_out" ? "✓" : st === "flagged" ? "!" : st === "failed" ? "✕" : "·";
@@ -371,17 +372,17 @@ function renderDossier() {
 
   <div class="section"><h3>Facilities nearby <span class="muted sm" style="text-transform:none">· federated join, ${esc(d.radius_m)} m</span></h3>
   <table class="tbl"><thead><tr><th>Facility</th><th class="num">Distance</th><th>Reports as</th><th class="num">Reported t CH₄</th></tr></thead><tbody>
-  ${d.candidates.map((k) => `<tr><td>${esc(k.facility_name)}${d.attributed?.facility_id === k.facility_id ? ' <span class="badge" style="color:#3ddc97">attributed</span>' : ""}</td><td class="num">${fmt(k.dist_m)} m</td><td>${k.kind === "basin_aggregate" ? `<span data-tip="An operator's whole basin, filed as one 'facility'. Its coordinates are representative, not an emitting site.">basin-level</span>` : "site"} <span class="muted sm">${esc(k.reported_industry_types)}</span></td><td class="num">${k.reported_ch4_t == null ? "—" : fmt(k.reported_ch4_t)}</td></tr>`).join("") || `<tr><td colspan="4" class="muted">No oil &amp; gas reporter within the search radius.</td></tr>`}
+  ${d.candidates.map((k) => `<tr><td>${esc(k.facility_name)}${d.attributed?.facility_id === k.facility_id ? ' <span class="badge attributed-tag" style="color:#3ddc97">attributed</span>' : ""}</td><td class="num">${fmt(k.dist_m)} m</td><td>${k.kind === "basin_aggregate" ? `<span data-tip="An operator's whole basin, filed as one 'facility'. Its coordinates are representative, not an emitting site.">basin-level</span>` : "site"} <span class="muted sm">${esc(k.reported_industry_types)}</span></td><td class="num">${k.reported_ch4_t == null ? "—" : fmt(k.reported_ch4_t)}</td></tr>`).join("") || `<tr><td colspan="4" class="muted">No oil &amp; gas reporter within the search radius.</td></tr>`}
   </tbody></table></div>
 
   <div class="section evidence"><h3>Evidence</h3>${d.evidence.map((e) => `<details><summary><span class="src-tag">${esc(e.source)}</span>${esc(e.detail.slice(0, 140))}${e.detail.length > 140 ? "…" : ""}${e.rows_hash ? ` <span class="muted sm mono">rows ${esc(e.rows_hash)}</span>` : ""}</summary><pre>${esc(e.sql ?? e.detail)}</pre></details>`).join("")}</div>
 
-  <div class="section"><h3>Analyst sign-off</h3>
+  <div class="section signoff-sec"><h3>Analyst sign-off</h3>
   ${d.contract ? `<p class="sm">Signed by <b>${esc(d.contract.scope.user)}</b> · contract <span class="mono">${esc(d.contract.contractId)}</span> · HMAC-SHA256 over the dossier and trace head</p><div class="contract">${esc(JSON.stringify(d.contract, null, 1))}</div>`
     : `<div class="row"><input id="analyst" placeholder="Your name" aria-label="Analyst name"><button class="btn" id="sign">Approve &amp; sign</button><span class="muted sm">Signing issues an execution contract that binds this exact dossier and trace.</span></div>`}</div>
 
-  <div class="section"><h3>Your label <span class="muted sm" style="text-transform:none">· builds the accuracy test set</span></h3>
-  <p class="muted sm" style="margin:0 0 8px">Looking at the image, the wind and the distances: which facility is at the plume's head?</p>
+  <div class="section labels-sec"><h3>Your label <span class="muted sm" style="text-transform:none">· builds the accuracy test set</span></h3>
+  <ol class="label-guide"><li>In the image, find where the plume is <b>narrow and brightest</b>: that's its head (the source). It fans out downwind, the way the white arrow points.</li><li>A facility <b>at or right next to the head</b> is the source. Pick it.</li><li>A facility the plume blows <b>toward</b>, or that's far from the head (roughly over 1 km), is not the source.</li><li>No facility near the head: <b>No reporter at the head</b>. Two equally plausible, or a messy image: <b>Can't tell</b>.</li></ol>
   <div class="labels">${d.candidates.filter((k) => k.kind === "point").slice(0, 5).map((k) => `<button class="btn sm ${label?.label === String(k.facility_id) ? "on" : ""}" data-l="${k.facility_id}">${esc(k.facility_name.slice(0, 30))}</button>`).join("")}<button class="btn sm ${label?.label === "none" ? "on" : ""}" data-l="none">No reporter at the head</button><button class="btn sm ${label?.label === "ambiguous" ? "on" : ""}" data-l="ambiguous">Can't tell</button></div></div>`;
   if (p.image) drawPlumeImage($("#pimg"), d);
   const sign = $("#sign");
@@ -426,7 +427,7 @@ function drawPlumeImage(cv, d) {
     for (const k of d.candidates) {
       let [x, y] = xy(k.latitude, k.longitude);
       const outside = x < 0 || y < 0 || x > W || y > H; x = clamp(x, W); y = clamp(y, H);
-      const col = d.attributed?.facility_id === k.facility_id ? "#3ddc97" : d.plume_reader?.inconsistent?.includes(k.facility_id) ? "#ff6b6b" : k.kind === "basin_aggregate" ? "#9aa6bb" : "#46e0ff";
+      const col = k.kind === "basin_aggregate" ? "#9aa6bb" : isBlind() ? "#46e0ff" : d.attributed?.facility_id === k.facility_id ? "#3ddc97" : d.plume_reader?.inconsistent?.includes(k.facility_id) ? "#ff6b6b" : "#46e0ff";
       g.fillStyle = col; g.strokeStyle = "#000"; g.lineWidth = 2;
       g.beginPath(); outside ? g.rect(x - 6, y - 6, 12, 12) : g.arc(x, y, 7, 0, 6.283); g.fill(); g.stroke();
       g.font = "600 12px Inter, sans-serif"; g.lineWidth = 3; g.strokeText(k.facility_name.slice(0, 22), x + 10, y + 4); g.fillText(k.facility_name.slice(0, 22), x + 10, y + 4);
@@ -467,6 +468,10 @@ $("#verify").onclick = async () => {
   const v = await api(`/api/runs/${encodeURIComponent(S.run.run_id)}/verify`);
   $("#verify-out").textContent = v.ok ? `✓ ${v.lines} lines, chain intact` : `✕ chain broken at line ${v.brokenAt}`;
 };
+
+// ---------- Blind labelling ----------
+$("#blind").onchange = (e) => { document.body.classList.toggle("blind", e.target.checked); try { localStorage.setItem("sl-blind", e.target.checked ? "1" : ""); } catch {} if (S.run) renderAll(); resize(); };
+try { if (localStorage.getItem("sl-blind")) { $("#blind").checked = true; document.body.classList.add("blind"); } } catch {}
 
 // ---------- Boot ----------
 function renderAll() { renderVerdicts(); renderList(); renderRollup(); renderDossier(); renderTraceList(); drawMap(); }
