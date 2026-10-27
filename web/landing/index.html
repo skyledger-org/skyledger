@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SkyLedger</title>
+<meta name="description" content="Satellites see the leaks. Companies report the numbers. SkyLedger is an AI agent team that checks one against the other.">
+<meta name="theme-color" content="#05070b">
+<link rel="stylesheet" href="/vendor/font-space-grotesk/index.css">
+<link rel="stylesheet" href="/vendor/font-inter/index.css">
+<link rel="stylesheet" href="/vendor/font-jetbrains-mono/400.css">
+<link rel="stylesheet" href="/vendor/lenis/lenis.css">
+<link rel="stylesheet" href="/landing/styles.css">
+<script type="importmap">
+{ "imports": { "three": "/vendor/three/build/three.module.js", "three/addons/": "/vendor/three/examples/jsm/" } }
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- Global WebGL layer (decorative; every word on the page is real DOM text) -->
+<canvas id="gl" aria-hidden="true"></canvas>
+<div class="fallback-bg" aria-hidden="true"></div>
+<div class="fx-vignette" aria-hidden="true"></div>
+<div class="fx-grain" aria-hidden="true"></div>
+<div class="anchors" id="anchors" aria-hidden="true"></div>
+<div class="cursor" id="cursor" aria-hidden="true"></div>
+
+<header class="nav" id="nav">
+  <a class="wordmark" href="#top" aria-label="SkyLedger, back to top">
+    <span class="wordmark-mark" aria-hidden="true"></span><span class="wm">Sky<span>Ledger</span></span>
+  </a>
+  <nav aria-label="Primary">
+    <ul class="nav-links">
+      <li><a href="#how">How it works</a></li>
+      <li><a href="#evidence">Evidence</a></li>
+      <li><a href="#sponsors">Sponsors</a></li>
+      <li><a href="https://github.com/skyledger-org/skyledger" rel="noopener">GitHub</a></li>
+    </ul>
+  </nav>
+  <a class="btn btn-small" href="/app">Console</a>
+</header>
+
+<main id="main">
+
+  <!-- HERO -->
+  <section class="hero" id="top" data-scene="hero">
+    <div class="wrap"><div class="hero-copy">
+      <p class="eyebrow mono reveal">Open Agent Hackathon 2026 · Track 1</p>
+      <h1 class="display hero-title">
+        <span class="line"><span>Satellites see the leaks.</span></span>
+        <span class="line accent"><span>SkyLedger checks the reports.</span></span>
+      </h1>
+      <p class="lede reveal">An AI agent team that checks satellite methane against what companies report.</p>
+      <div class="cta-row reveal">
+        <a class="btn btn-primary" href="/app">Open the analyst console <span aria-hidden="true">→</span></a>
+        <a class="btn btn-ghost" href="#how">See how it works</a>
+      </div>
+      <p class="hero-meta mono reveal dg" data-group="geo">
+        <span><i class="dot dot-amber" aria-hidden="true"></i><b data-bind="geoSources"></b> Carbon Mapper sources</span>
+        <span><i class="dot dot-cyan" aria-hidden="true"></i><b data-bind="geoFacilities"></b> EPA GHGRP facilities, RY<b data-bind="ghgrpYear"></b></span>
+      </p>
+    </div></div>
+    <a class="scroll-cue mono" href="#how" aria-label="Scroll to explore"><span>Scroll to explore</span><i aria-hidden="true"></i></a>
+  </section>
+
+  <!-- A. THREE SOURCES -->
+  <section class="story" id="how" data-scene="layers">
+    <div class="wrap grid-2">
+      <div class="panel panel-left">
+        <p class="kicker mono">01 · The problem</p>
+        <h2 class="display h2 split">
+          <span class="line"><span>Three sources that</span></span>
+          <span class="line"><span>were never designed</span></span>
+          <span class="line"><span>to meet.</span></span>
+        </h2>
+        <p class="body reveal">No shared keys. No shared units. No shared clocks. Joining them by hand is how a plume gets blamed on the wrong plant.</p>
+        <ol class="layers">
+          <li class="layer layer-sky reveal">
+            <span class="layer-tag mono">Sky</span>
+            <div>
+              <h3>A plume is a point and a rate</h3>
+              <p>Carbon Mapper sees methane from aircraft and satellites (Tanager, EMIT, AVIRIS-NG, GAO): kilograms per hour, on one morning.<span class="dg" data-group="featured"> For example <b class="mono" data-bind="fRate"></b> kg/h on <b class="mono" data-bind="fDate"></b>.</span></p>
+            </div>
+          </li>
+          <li class="layer layer-ground reveal">
+            <span class="layer-tag mono">Ground</span>
+            <div>
+              <h3>A report is a facility and a year</h3>
+              <p>Facilities self-report to the US EPA Greenhouse Gas Reporting Program: tonnes of CO₂e for a whole year, sometimes aggregated across an entire basin.<span class="dg" data-group="featured"> <b data-bind="fFacility"></b> reported <b class="mono" data-bind="fReported"></b> t CH₄ for RY<b class="mono" data-bind="ghgrpYear"></b>.</span></p>
+            </div>
+          </li>
+          <li class="layer layer-ledger reveal">
+            <span class="layer-tag mono">Ledger</span>
+            <div>
+              <h3>An owner is a free-text string</h3>
+              <p>Operators, joint ventures and percentages typed many different ways. The Meterless World Model merges them into parent companies.<span class="dg" data-group="featuredParents"> Parent here: <b class="mono" data-bind="fParents"></b>.</span></p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- B1. ONE PLUME -->
+  <section class="story" id="plume" data-scene="dive">
+    <div class="wrap grid-2">
+      <div class="panel panel-left">
+        <p class="kicker mono">02 · One case</p>
+        <h2 class="display h2 split">
+          <span class="line"><span>One plume.</span></span>
+          <span class="line"><span data-bind="agentLine">A team of agents.</span></span>
+        </h2>
+        <p class="body reveal">Follow a single plume through the team. GeoLinker finds the facilities around it with a federated geo-join through Zetaris. PlumeReader checks the wind, and NVIDIA Nemotron reads the image blind, without being told which facility is suspected.</p>
+        <dl class="facts mono reveal dg" data-group="featured">
+          <div><dt>Plume</dt><dd data-bind="fId"></dd></div>
+          <div><dt>Instrument</dt><dd data-bind="fPlatform"></dd></div>
+          <div><dt>Scene date</dt><dd data-bind="fDate"></dd></div>
+          <div><dt>Rate</dt><dd><span data-bind="fRate"></span> kg/h</dd></div>
+          <div><dt>Wind</dt><dd>from <span data-bind="fWindFrom"></span>° at <span data-bind="fWindSpeed"></span> m/s</dd></div>
+          <div><dt>Plume drifts toward</dt><dd><span data-bind="fWindTo"></span>°</dd></div>
+        </dl>
+      </div>
+      <div class="panel panel-right dg" data-group="featured">
+        <figure class="quicklook reveal">
+          <div class="quicklook-img">
+            <img id="fImage" alt="" loading="lazy" decoding="async">
+            <span class="wind-badge mono" id="windBadge" aria-hidden="true"><i id="windArrow">↑</i> wind</span>
+          </div>
+          <figcaption class="mono">Carbon Mapper quicklook · <span data-bind="fPlatform"></span> · <span data-bind="fDate"></span></figcaption>
+        </figure>
+        <div class="candidates reveal">
+          <p class="kicker mono">Facilities near the plume head</p>
+          <ul id="candidates"></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- B2. PIPELINE -->
+  <section class="story story-wide" id="agents" data-scene="pipeline">
+    <div class="wrap">
+      <div class="panel panel-wide">
+        <p class="kicker mono">03 · The team</p>
+        <h2 class="display h2 split">
+          <span class="line"><span>A pipeline that</span></span>
+          <span class="line"><span>argues with itself.</span></span>
+        </h2>
+        <p class="body reveal">Each agent hands its work forward. The Skeptic can block the Reporter, or send a case back to GeoLinker, PlumeReader or the Reconciler, in bounded loops.</p>
+        <div class="pipeline-wrap dg" data-group="agents">
+          <svg class="pipeline-arcs" id="pipelineArcs" aria-hidden="true"></svg>
+          <ol class="pipeline" id="pipeline"></ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- C. SKEPTIC -->
+  <section class="story story-wide" id="skeptic" data-scene="skeptic">
+    <div class="wrap">
+      <div class="panel panel-wide">
+        <p class="kicker mono">04 · The Skeptic</p>
+        <h2 class="display h2 split">
+          <span class="line"><span>The Skeptic tries</span></span>
+          <span class="line"><span>to prove us wrong.</span></span>
+        </h2>
+        <p class="body reveal">Before a single word is written, <span data-bind="rivalWord">the</span> rival explanations must be ruled out. If one survives, the case is held back or sent for more work.</p>
+        <ul class="rivals dg" data-group="rivals" id="rivals"></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- D. RESULT -->
+  <section class="story" id="result" data-scene="result">
+    <div class="wrap grid-2">
+      <div class="panel panel-left dg" data-group="result">
+        <p class="kicker mono">05 · The finding</p>
+        <h2 class="display h2 split">
+          <span class="line"><span>A range,</span></span>
+          <span class="line"><span>not an accusation.</span></span>
+        </h2>
+        <div class="result-card reveal">
+          <div class="result-head">
+            <div>
+              <p class="mono muted small-caps">Facility</p>
+              <p class="result-facility" data-bind="fFacility"></p>
+              <p class="mono muted dg" data-group="featuredParents">Parent: <span data-bind="fParents"></span></p>
+            </div>
+            <span class="badge mono">Draft · requires analyst sign-off</span>
+          </div>
+          <div class="rangebar" id="rangebar" role="img" aria-label="">
+            <div class="rangebar-track">
+              <div class="rangebar-fill" id="rangeFill"></div>
+              <div class="rangebar-mark" id="rangeMark"></div>
+            </div>
+            <div class="rangebar-labels mono">
+              <span class="lbl-rep" id="lblRep">Reported <b data-bind="fReported"></b> t</span>
+              <span class="lbl-imp" id="lblImp">Implied <b data-bind="fImplied"></b> t CH₄/yr</span>
+            </div>
+          </div>
+          <p class="ratio"><span class="mono" data-bind="fRatio"></span><span class="ratio-unit">× the reported figure</span></p>
+          <p class="guarded" id="guarded"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- E. EVIDENCE -->
+  <section class="story story-wide" id="evidence" data-scene="evidence">
+    <div class="wrap">
+      <div class="panel panel-wide">
+        <p class="kicker mono">06 · Evidence</p>
+        <h2 class="display h2 split">
+          <span class="line"><span>Fewer flags.</span></span>
+          <span class="line"><span>Better ones.</span></span>
+        </h2>
+        <p class="body reveal dg" data-group="runMode" id="runMode"></p>
+        <div class="counters dg" data-group="stats">
+          <div class="counter reveal"><span class="counter-n mono" data-count="data.sources"></span><span class="counter-l">Carbon Mapper methane sources in the scan area</span></div>
+          <div class="counter reveal"><span class="counter-n mono" data-count="run.plumes"></span><span class="counter-l">plumes analysed end to end by the agent team</span></div>
+          <div class="counter reveal"><span class="counter-n mono" data-count="run.summary.unreported_source"></span><span class="counter-l">plumes with no reporting facility at the plume head</span></div>
+          <div class="counter reveal"><span class="counter-n mono" data-count="eval.label_free.nearest_blames_over_1km"></span><span class="counter-l">cases where simple nearest-facility matching blames a plant more than 1 km from the plume head</span></div>
+        </div>
+        <div class="versus reveal dg" data-group="stats">
+          <div class="versus-side">
+            <span class="counter-n mono dim" data-count="eval.label_free.naive_discrepancy_flags"></span>
+            <span class="counter-l">discrepancies flagged by a naive baseline: nearest facility, all-time persistence, no time window, no rival tests</span>
+          </div>
+          <span class="versus-arrow mono" aria-hidden="true">→</span>
+          <div class="versus-side">
+            <span class="counter-n mono accent" data-count="eval.label_free.skyledger_discrepancy_flags"></span>
+            <span class="counter-l">still flagged after the Skeptic rules out the rival explanations</span>
+          </div>
+        </div>
+        <div class="verdicts reveal dg" data-group="verdicts">
+          <p class="kicker mono">Where every plume in the run ended up</p>
+          <div class="verdict-bar" id="verdictBar" aria-hidden="true"></div>
+          <ul class="verdict-legend" id="verdictLegend"></ul>
+        </div>
+        <p class="footnote muted dg" data-group="labels" id="labelNote"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- F. BUILT ON -->
+  <section class="story story-wide" id="sponsors" data-scene="built">
+    <div class="wrap">
+      <div class="panel panel-wide">
+        <p class="kicker mono">07 · Built on</p>
+        <h2 class="display h2 split">
+          <span class="line"><span>Query in place.</span></span>
+          <span class="line"><span>Reason in the open.</span></span>
+        </h2>
+        <ul class="builton">
+          <li class="reveal">
+            <h3>Zetaris</h3>
+            <p>Federated SQL. GeoLinker joins plumes to facilities and reported CH₄ across sources, with the data queried where it lives instead of copied into a new warehouse.</p>
+          </li>
+          <li class="reveal">
+            <h3>Meterless</h3>
+            <p>Nightshift is the primary AI provider. The World Model engine resolves owner strings to parent companies, and sign-off uses Scout-shaped execution contracts.</p>
+          </li>
+          <li class="reveal">
+            <h3>NVIDIA Nemotron</h3>
+            <p>Reads the plume image blind and writes the draft dossier in guarded language. A guard rejects any number in the text that the code did not compute.</p>
+          </li>
+          <li class="reveal">
+            <h3>Cursor</h3>
+            <p>Where the product was developed, with its project rules kept in the repository.</p>
+          </li>
+        </ul>
+        <p class="footnote muted reveal">An honest note: Nightshift 1.2.7 refuses image inputs, so the plume-image check falls back to NVIDIA's API directly. Text generation runs through Nightshift. Product names are trademarks of their owners and appear here only to describe what SkyLedger runs on.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- G. CTA -->
+  <section class="final" id="cta" data-scene="cta">
+    <div class="wrap">
+      <h2 class="display final-title split">
+        <span class="line"><span>Check the numbers</span></span>
+        <span class="line accent"><span>against the sky.</span></span>
+      </h2>
+      <div class="cta-row reveal">
+        <a class="btn btn-primary btn-big" href="/app">Open the analyst console <span aria-hidden="true">→</span></a>
+        <a class="btn btn-ghost btn-big" href="https://github.com/skyledger-org/skyledger" rel="noopener">View on GitHub</a>
+      </div>
+    </div>
+    <footer class="footer">
+      <div class="wrap footer-grid">
+        <div>
+          <p class="wordmark wordmark-foot"><span class="wm">Sky<span>Ledger</span></span></p>
+          <p class="muted">Open Agent Hackathon 2026 · Track 1</p>
+        </div>
+        <div>
+          <p class="mono small-caps muted">Data</p>
+          <p>Carbon Mapper (non-commercial use with attribution), US EPA GHGRP, SEC EDGAR.</p>
+        </div>
+        <div>
+          <p class="mono small-caps muted">Language</p>
+          <p>Findings are drafts stating whether observations are consistent or inconsistent with available data. They are not findings of wrongdoing.</p>
+        </div>
+      </div>
+    </footer>
+  </section>
+
+</main>
+
+<script src="/vendor/gsap/gsap.min.js"></script>
+<script src="/vendor/gsap/ScrollTrigger.min.js"></script>
+<script type="module" src="/landing/main.js"></script>
+</body>
+</html>
