@@ -192,7 +192,7 @@ How to read it honestly:
 - Basin-level `W-ONSH`/`W-GB` reports can't be compared at the facility level. SkyLedger says so (coverage gap) instead of guessing.
 - Facility-level CH₄ totals include all subparts. Subpart W is estimated with emission factors in many cases, so a gap can reflect methodology, not misreporting. **SkyLedger says "inconsistent with available data", never "fraud".**
 - The sample covers 60 sources in one basin and one reporting year.
-- Live Zetaris and live Nightshift/Nemotron were tested on 2026-10-26 (see `output_examples/live/`). The Docker build has not been tested yet; status is tracked in `HANDOFF.md`.
+- Live Zetaris and live Nightshift/Nemotron were tested on 2026-10-26 (see `output_examples/live/`). The Docker image was tested from a fresh clone with no `.env` and no network: `/health`, `/`, `/app` and `POST /run` all succeed.
 - Vision is checked against the wind, but the plume quicklooks are small (about 114×113 px), so a disagreement may come from the image as much as from the wind estimate. SkyLedger treats a disagreement as a reason for doubt, never as proof.
 
 ## Data and licences
