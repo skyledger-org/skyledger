@@ -24,6 +24,13 @@ Label-free diagnostic from `npm run eval`: nearest-facility matching names a fac
 
 Against **15 hand-labelled plumes** (5 more marked unsure and left out), the wrong facility was blamed in **33%** of cases by nearest-facility matching, **47%** by a single LLM call and **7%** by SkyLedger, which also raised **no false discrepancy flags** (nearest-facility: 1). This is a small sanity check labelled by the team, not expert ground truth; see [Eval](#eval) for the caveats.
 
+## Requirements and dependencies
+
+- **Node.js 22 or newer** and npm (or Docker instead: the image is based on `node:22-slim`). No Python, no build step, no GPU.
+- **npm packages** (installed by `npm ci`): `tsx` runs the TypeScript directly; `three`, `gsap` and `lenis` draw the landing page; `@fontsource` packages provide the fonts, served locally. Dev only: `typescript` and `@types/node` for `npm run typecheck`.
+- **Vendored, no install needed:** the Meterless World Model reference engine (`vendor/world-model/`) and the Scout Intent spec (`vendor/scout-intent/`).
+- **Optional, for live mode only:** a local Zetaris platform with the three tables registered, Meterless Nightshift with an NVIDIA provider, and optionally `NVIDIA_API_KEY` for the vision fallback. See [Live mode](#live-mode-zetaris--meterless-nightshift--nemotron).
+
 ## Quick start (no credentials, no network, no GPU)
 
 ```bash
