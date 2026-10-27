@@ -183,19 +183,8 @@ button, select, input { font: inherit; color: inherit; }
 .src-tag { font: 11px var(--mono); color: var(--cyan); margin-right: 6px; }
 .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
 .row input { background: var(--panel-2); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 8px 10px; color: var(--ink); }
-.labels button { margin: 0 6px 6px 0; }
-.labels button.on { background: rgba(70, 224, 255, 0.15); border-color: var(--cyan); }
 .contract { font: 12px/1.5 var(--mono); color: var(--ink-2); background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 10px; white-space: pre-wrap; max-height: 260px; overflow: auto; }
 
-/* Blind labelling: hide everything that reveals SkyLedger's answer; keep the raw evidence */
-.blind-toggle { align-self: center; font-size: 13px; color: var(--ink-2); display: flex; gap: 6px; align-items: center; padding: 8px 10px; border: 1px dashed var(--line-2); border-radius: 8px; }
-body.blind .pcard .badge, body.blind .verdicts, body.blind .d-head .badge, body.blind .explain, body.blind .summary,
-body.blind .kpis, body.blind .ratio, body.blind .rivals, body.blind .rivals + p, body.blind .plume-reading, body.blind .owners-sec,
-body.blind .evidence, body.blind .signoff-sec, body.blind .trace-pane, body.blind .attributed-tag, body.blind .rival-head { display: none !important; }
-body.blind .grid { grid-template-columns: 340px minmax(0, 1fr); }
-body.blind .labels-sec { border: 1px solid var(--cyan); border-radius: 12px; padding: 14px; background: rgba(70,224,255,.05); }
-.label-guide { font-size: 13px; color: var(--ink-2); margin: 0 0 10px; padding-left: 18px; }
-.label-guide li { margin: 3px 0; }
 
 /* Trace */
 .trace-tools { display: flex; gap: 10px; align-items: center; padding: 0 16px 8px; }

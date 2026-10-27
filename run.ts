@@ -9,7 +9,7 @@ import { config, DATA_DIR, LOG_DIR, ROOT } from "./app/config.ts";
 import { run } from "./app/orchestrator.ts";
 import { issueContract, verifyContract } from "./app/agents/signoff.ts";
 import { verifyTrace, Tracer } from "./app/tracing.ts";
-import { geoPayload, statsPayload, statusPayload } from "./app/public_api.ts";
+import { geoPayload, statsPayload, statusPayload, labelQueue } from "./app/public_api.ts";
 
 let activeRun: string | null = null;
 
@@ -73,6 +73,8 @@ async function handle(req: IncomingMessage, res: ServerResponse) {
     if (req.method === "GET" && (path === "/" || path === "/index.html")) return serveFile(res, join(ROOT, "web", "landing"), "index.html");
     if (req.method === "GET" && (path === "/app" || path === "/app/")) return serveFile(res, join(ROOT, "web", "app"), "index.html");
     if (req.method === "GET" && path.startsWith("/app/")) return serveFile(res, join(ROOT, "web", "app"), path.slice(5));
+    if (req.method === "GET" && (path === "/label" || path === "/label/")) return serveFile(res, join(ROOT, "web", "label"), "index.html");
+    if (req.method === "GET" && path.startsWith("/label/")) return serveFile(res, join(ROOT, "web", "label"), path.slice(7));
     if (req.method === "GET" && path.startsWith("/landing/")) return serveFile(res, join(ROOT, "web", "landing"), path.slice(9));
     if (req.method === "GET" && (path === "/deck" || path === "/deck/")) return serveFile(res, join(ROOT, "web", "deck"), "index.html");
     if (req.method === "GET" && path.startsWith("/deck/")) return serveFile(res, join(ROOT, "web", "deck"), path.slice(6));
@@ -84,6 +86,7 @@ async function handle(req: IncomingMessage, res: ServerResponse) {
     }
     if (req.method === "GET" && path === "/health") return send(res, 200, { status: "ok", sample_mode: config.sampleMode });
     if (req.method === "GET" && path.startsWith("/images/")) return serveFile(res, join(DATA_DIR, "images"), path.slice(8), true);
+    if (req.method === "GET" && path === "/api/label/queue") return send(res, 200, labelQueue());
     if (req.method === "GET" && path === "/api/geo") return send(res, 200, geoPayload());
     if (req.method === "GET" && path === "/api/stats") return send(res, 200, statsPayload());
     if (req.method === "GET" && path === "/api/status") return send(res, 200, await statusPayload());

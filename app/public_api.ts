@@ -116,3 +116,29 @@ export async function statusPayload() {
   statusCache = { at: Date.now(), body };
   return body;
 }
+
+// ---- Labelling queue for /label: plume facts and nearby facilities only, never SkyLedger's answers ----
+
+/** Stable pseudo-random order, so plumes are not grouped by size or verdict and every visit sees the same queue. */
+const shuffleKey = (id: string) => { let h = 2166136261; for (const ch of id) h = Math.imul(h ^ ch.charCodeAt(0), 16777619); return h >>> 0; };
+
+export function labelQueue() {
+  const { source_run, batch } = config.settings.labelling;
+  const { at_origin_m, upwind_max_m, calm_wind_ms } = config.settings.attribution;
+  const run = readJson(source_run);
+  const dossiers: any[] = run?.output?.dossiers ?? [];
+  const plumes = dossiers
+    .map((d) => {
+      const p = d.plume;
+      return {
+        plume_id: p.plume_id, platform: p.platform, date: String(p.scene_timestamp).slice(0, 10),
+        rate_kgph: p.emission_kgph, wind_from_deg: p.wind_direction_deg, wind_speed_ms: p.wind_speed_ms,
+        image: p.image, bounds: p.plume_bounds, origin: [p.plume_lat ?? p.lat, p.plume_lon ?? p.lon],
+        facilities: d.candidates.map((k: any) => ({ id: String(k.facility_id), name: k.facility_name, kind: k.kind, dist_m: k.dist_m, lat: k.latitude, lon: k.longitude })),
+      };
+    })
+    // A plume with no reporting site nearby has only one possible answer, so it would only inflate the score.
+    .filter((p) => p.facilities.some((f: any) => f.kind === "point"))
+    .sort((a, b) => shuffleKey(a.plume_id) - shuffleKey(b.plume_id));
+  return { run_id: run?.run_id ?? null, batch, near_m: at_origin_m, far_m: upwind_max_m, calm_ms: calm_wind_ms, plumes };
+}

@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SkyLedger · Label plumes</title>
+<meta name="description" content="Say which facility each satellite methane plume comes from. Your answers become the test set SkyLedger is scored against.">
+<link rel="stylesheet" href="/vendor/font-space-grotesk/index.css">
+<link rel="stylesheet" href="/vendor/font-inter/index.css">
+<link rel="stylesheet" href="/vendor/font-jetbrains-mono/400.css">
+<link rel="stylesheet" href="/app/app.css">
+<link rel="stylesheet" href="/label/label.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="/" aria-label="SkyLedger home">
+    <span class="brand-mark" aria-hidden="true"></span><span>SkyLedger</span><span class="brand-sub">Label plumes</span>
+  </a>
+  <div class="lb-progress" id="progress" hidden>
+    <span id="progress-text"></span>
+    <div class="lb-bar"><i id="progress-bar"></i></div>
+  </div>
+  <nav class="toplinks">
+    <a href="#" id="howto-link">How to decide</a>
+    <a href="/app">Analyst console</a>
+  </nav>
+</header>
+
+<main class="lb-main" id="main">
+  <!-- Intro -->
+  <section class="lb-intro" id="intro" hidden>
+    <p class="lb-eyebrow">Your job: referee</p>
+    <h1>Which facility is each plume coming from?</h1>
+    <p class="lb-lede">You'll see one satellite picture at a time and answer one question. About a minute each. SkyLedger's own answers are hidden here, so the test is fair. Afterwards it's scored against you.</p>
+    <ol class="lb-steps">
+      <li>
+        <svg viewBox="0 0 120 80" aria-hidden="true"><defs><radialGradient id="g1" cx="25%" cy="50%" r="80%"><stop offset="0" stop-color="#ffd27a"/><stop offset=".5" stop-color="#ff4fa3" stop-opacity=".6"/><stop offset="1" stop-color="#ff4fa3" stop-opacity="0"/></radialGradient></defs><rect width="120" height="80" rx="8" fill="#0d1320"/><path d="M28 40 Q70 20 112 18 L112 64 Q70 62 28 40Z" fill="url(#g1)"/><path d="M12 40h9M35 40h9M28 24v9M28 47v9" stroke="#fff" stroke-width="3"/></svg>
+        <b>1. Find the ✚</b>
+        <span>It marks where the plume starts. The smoke spreads out from there, the way the white arrow (the wind) points.</span>
+      </li>
+      <li>
+        <svg viewBox="0 0 120 80" aria-hidden="true"><rect width="120" height="80" rx="8" fill="#0d1320"/><path d="M28 40 Q70 20 112 18 L112 64 Q70 62 28 40Z" fill="url(#g1)"/><path d="M12 40h9M35 40h9M28 24v9M28 47v9" stroke="#fff" stroke-width="3"/><circle cx="28" cy="40" r="8" fill="#46e0ff" stroke="#000" stroke-width="2"/><text x="28" y="44" text-anchor="middle" font-size="11" font-weight="700" fill="#05070b">A</text></svg>
+        <b>2. Is a lettered dot right there?</b>
+        <span>Each dot is a facility that reports to the EPA. A dot at the ✚ is the source.</span>
+      </li>
+      <li>
+        <svg viewBox="0 0 120 80" aria-hidden="true"><rect width="120" height="80" rx="8" fill="#0d1320"/><path d="M28 40 Q70 20 112 18 L112 64 Q70 62 28 40Z" fill="url(#g1)"/><path d="M12 40h9M35 40h9M28 24v9M28 47v9" stroke="#fff" stroke-width="3"/><circle cx="96" cy="40" r="9" fill="#46e0ff" stroke="#000" stroke-width="2"/><text x="96" y="44" text-anchor="middle" font-size="11" font-weight="700" fill="#05070b">B</text></svg>
+        <b>3. A dot the smoke only drifts toward is not the source</b>
+        <span>No dot at the ✚? Pick <em>None of these</em>. Two equally likely, or can't see? Pick <em>Not sure</em>. That's a fine answer.</span>
+      </li>
+    </ol>
+    <button class="btn primary lb-start" id="start">Start labelling</button>
+    <p class="muted sm" id="intro-note"></p>
+  </section>
+
+  <!-- One plume -->
+  <section class="lb-card" id="card" hidden>
+    <figure class="lb-figure">
+      <canvas id="img" aria-label="Satellite picture of the methane plume with nearby facilities marked"></canvas>
+      <figcaption>
+        <span><b class="k-cross">✚</b> where the plume starts</span>
+        <span><b class="k-arrow">➜</b> wind direction</span>
+        <span><b class="k-dot">A</b> reporting facility</span>
+        <span id="cap-basin" hidden><b class="k-basin"></b> company-wide report, not a real site</span>
+      </figcaption>
+      <p class="muted sm lb-meta" id="meta"></p>
+    </figure>
+
+    <div class="lb-q">
+      <p class="lb-eyebrow" id="qcount"></p>
+      <h2>Which facility is this plume coming from?</h2>
+      <p class="lb-hint">Look at the <b>✚</b>. A facility <b>right at it</b> is the source. A facility the smoke only drifts toward is not.</p>
+      <p class="lb-warn" id="calm" hidden>The wind is very weak here, so the smoke's direction tells you little. Go by what sits at the ✚.</p>
+      <div class="lb-options" id="options" role="radiogroup" aria-label="Your answer"></div>
+      <div class="lb-nav">
+        <button class="btn ghost sm" id="prev">← Back</button>
+        <span class="muted sm">Keys: letters to choose · N none · S not sure</span>
+        <button class="btn ghost sm" id="skip">Skip →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Done -->
+  <section class="lb-done" id="done" hidden>
+    <p class="lb-eyebrow">Batch complete</p>
+    <h1 id="done-title"></h1>
+    <p class="lb-lede">Your answers are saved in <code>eval/labels.csv</code>. To score SkyLedger against them, run <code>npm run eval</code>.</p>
+    <div class="lb-done-actions">
+      <button class="btn primary" id="more">Label 10 more</button>
+      <a class="btn" href="/app">Open the analyst console</a>
+    </div>
+    <h3>Your answers</h3>
+    <ol class="lb-review" id="review"></ol>
+  </section>
+
+  <p class="lb-empty" id="empty" hidden></p>
+</main>
+
+<script type="module" src="/label/label.js"></script>
+</body>
+</html>

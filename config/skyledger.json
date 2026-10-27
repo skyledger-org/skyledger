@@ -48,6 +48,12 @@
     "live_max_plumes_env": "SKYLEDGER_LIVE_MAX_PLUMES"
   },
 
+  "labelling": {
+    "$comment": "The /label page: plumes from this saved run, shown in a fixed shuffled order, one batch at a time. Only plume facts and nearby facilities are sent to the page, never SkyLedger's verdicts.",
+    "source_run": "output_examples/example_1.json",
+    "batch": 20
+  },
+
   "providers": {
     "$comment": "AI_PROVIDER picks where model calls go: nightshift (Meterless Nightshift, the default), nvidia (NVIDIA API directly, e.g. for hosting), none (deterministic fallbacks only). Model ids per role; each can be overridden by the env var named in *_env.",
     "default": "nightshift",

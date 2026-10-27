@@ -100,6 +100,7 @@ export const config = {
       model_concurrency: pick<number>(S.run, "model_concurrency"),
       live_max_plumes: pick<number>(S.run, "live_max_plumes"),
     },
+    labelling: S.labelling as { source_run: string; batch: number },
   },
   meterless: {
     baseUrl: env("METERLESS_BASE_URL", "http://127.0.0.1:8088/v1"),
