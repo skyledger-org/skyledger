@@ -74,6 +74,8 @@ async function handle(req: IncomingMessage, res: ServerResponse) {
     if (req.method === "GET" && (path === "/app" || path === "/app/")) return serveFile(res, join(ROOT, "web", "app"), "index.html");
     if (req.method === "GET" && path.startsWith("/app/")) return serveFile(res, join(ROOT, "web", "app"), path.slice(5));
     if (req.method === "GET" && path.startsWith("/landing/")) return serveFile(res, join(ROOT, "web", "landing"), path.slice(9));
+    if (req.method === "GET" && (path === "/deck" || path === "/deck/")) return serveFile(res, join(ROOT, "web", "deck"), "index.html");
+    if (req.method === "GET" && path.startsWith("/deck/")) return serveFile(res, join(ROOT, "web", "deck"), path.slice(6));
     if (req.method === "GET" && path.startsWith("/vendor/")) {
       const [, , lib, ...rest] = path.split("/");
       if (!VENDOR[lib]) return err(res, 404, "not_found", path);

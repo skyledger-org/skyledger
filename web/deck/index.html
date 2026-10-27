@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SkyLedger · Deck</title>
+<link rel="stylesheet" href="/vendor/font-space-grotesk/index.css">
+<link rel="stylesheet" href="/vendor/font-inter/index.css">
+<link rel="stylesheet" href="/vendor/font-jetbrains-mono/400.css">
+<style>
+:root { --bg:#05070b; --ink:#e9eef5; --ink2:#c3cbd8; --muted:#8692a6; --line:rgba(255,255,255,.1); --panel:rgba(255,255,255,.035);
+  --amber:#ffb547; --magenta:#ff4fa3; --cyan:#46e0ff; --green:#3ddc97; --yellow:#f5c451;
+  --display:"Space Grotesk Variable",system-ui,sans-serif; --body:"Inter Variable",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,monospace; }
+@page { size: 1920px 1080px; margin: 0; }
+* { box-sizing: border-box; }
+html, body { margin: 0; background: #000; color: var(--ink); font: 26px/1.45 var(--body); -webkit-font-smoothing: antialiased; }
+.slide { width: 1920px; height: 1080px; position: relative; overflow: hidden; padding: 96px 120px 120px; display: flex; flex-direction: column; justify-content: center; page-break-after: always; break-after: page;
+  background: radial-gradient(900px 600px at 85% 0%, rgba(70,224,255,.07), transparent 60%), radial-gradient(800px 500px at 0% 100%, rgba(255,79,163,.06), transparent 60%), var(--bg); }
+@media screen { body { display: grid; gap: 24px; padding: 24px; justify-content: center; } .slide { transform-origin: top left; } }
+.kicker { font: 500 20px var(--mono); letter-spacing: 3px; text-transform: uppercase; color: var(--muted); margin-bottom: 28px; }
+.kicker b { color: var(--amber); font-weight: 500; }
+h1 { font: 600 92px/1.02 var(--display); letter-spacing: -1.5px; margin: 0 0 28px; }
+h2 { font: 600 64px/1.06 var(--display); letter-spacing: -1px; margin: 0 0 36px; max-width: 1500px; }
+h3 { font: 600 30px var(--display); margin: 0 0 10px; }
+.accent { color: var(--amber); } .mag { color: var(--magenta); } .cy { color: var(--cyan); } .gr { color: var(--green); }
+p { margin: 0 0 18px; color: var(--ink2); }
+.lead { font-size: 32px; color: var(--ink2); max-width: 1300px; }
+.small { font-size: 20px; color: var(--muted); }
+.mono { font-family: var(--mono); }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+.grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 18px; padding: 28px 30px; }
+.card p { font-size: 23px; margin: 0; }
+.num { font: 600 76px/1 var(--display); letter-spacing: -1px; margin-bottom: 10px; }
+.foot { position: absolute; left: 120px; right: 120px; bottom: 44px; display: flex; justify-content: space-between; font: 18px var(--mono); color: var(--muted); }
+.brand { display: inline-flex; align-items: center; gap: 12px; font: 600 26px var(--display); color: var(--ink); }
+.dot { width: 22px; height: 22px; border-radius: 50%; background: conic-gradient(from 210deg, var(--magenta), var(--amber), var(--cyan), var(--magenta)); box-shadow: 0 0 20px rgba(255,181,71,.5); }
+.shot { width: 100%; border-radius: 16px; border: 1px solid var(--line); display: block; box-shadow: 0 30px 80px rgba(0,0,0,.6); }
+.pill { display: inline-block; padding: 6px 16px; border-radius: 999px; border: 1px solid var(--line); font: 20px var(--mono); color: var(--ink2); margin: 0 10px 10px 0; }
+ul.clean { list-style: none; padding: 0; margin: 0; } ul.clean li { padding: 12px 0 12px 34px; position: relative; color: var(--ink2); border-bottom: 1px solid var(--line); font-size: 25px; }
+ul.clean li::before { content: ""; position: absolute; left: 4px; top: 25px; width: 12px; height: 12px; border-radius: 50%; background: var(--amber); }
+ul.clean li b { color: var(--ink); }
+table { width: 100%; border-collapse: collapse; font-size: 23px; } td, th { text-align: left; padding: 14px 12px; border-bottom: 1px solid var(--line); vertical-align: top; } th { font: 500 18px var(--mono); color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+td:first-child { color: var(--ink); font-weight: 600; white-space: nowrap; }
+.flow { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin: 30px 0; }
+.node { padding: 18px 22px; border-radius: 14px; border: 1px solid var(--line); background: var(--panel); font: 600 24px var(--display); }
+.node small { display: block; font: 400 17px var(--body); color: var(--muted); margin-top: 4px; }
+.arrow { color: var(--muted); font-size: 30px; }
+.node.sk { border-color: var(--magenta); box-shadow: 0 0 30px rgba(255,79,163,.25); }
+.bar { display: flex; height: 26px; border-radius: 99px; overflow: hidden; margin: 18px 0 14px; }
+.missing { opacity: .4; }
+</style>
+</head>
+<body>
+
+<!-- 1. Title -->
+<section class="slide" style="background: linear-gradient(90deg, rgba(5,7,11,.92) 0%, rgba(5,7,11,.55) 55%, rgba(5,7,11,.2)), url('/deck/img/scene-clean.png') center / cover no-repeat, var(--bg);">
+  <div class="brand" style="position: absolute; top: 80px; left: 120px"><span class="dot"></span>SkyLedger</div>
+  <div>
+    <div class="kicker">Open Agent Hackathon 2026 · <b>Track 1 · Solving Fragmented Intelligence</b></div>
+    <h1>Satellites see the leaks.<br><span class="accent">SkyLedger checks the reports.</span></h1>
+    <p class="lead">An AI agent team that checks satellite-observed methane against what companies report to the US EPA, and who owns each facility.</p>
+  </div>
+  <div class="foot"><span>github.com/skyledger-org/skyledger</span><span id="team-line">Built on Zetaris · Meterless · NVIDIA Nemotron · Cursor</span></div>
+</section>
+
+<!-- 2. Problem -->
+<section class="slide">
+  <div class="kicker">01 · <b>The problem</b></div>
+  <h2>Three sources that were never designed to meet.</h2>
+  <div class="grid3">
+    <div class="card"><div class="num accent">kg / hour</div><h3>What satellites see</h3><p>A methane plume at a point, on one morning. Carbon Mapper (Tanager, EMIT, AVIRIS-NG, GAO).</p></div>
+    <div class="card"><div class="num cy">t CO₂e / year</div><h3>What companies report</h3><p>One annual total per facility ID to the EPA Greenhouse Gas Reporting Program.</p></div>
+    <div class="card"><div class="num mag">free text</div><h3>Who owns it</h3><p>“TARGA RESOURCES (73%); PIONEER NATURAL RESOURCES USA INC (27%)”: inconsistent strings, no IDs.</p></div>
+  </div>
+  <p class="lead" style="margin-top: 44px">No shared keys, no shared units, no shared clock. Nobody reconciles them at scale, so a leak seen from space rarely meets the number a company reported.</p>
+  <div class="foot"><span>SkyLedger</span><span>The problem</span></div>
+</section>
+
+<!-- 3. Users and why now -->
+<section class="slide">
+  <div class="kicker">02 · <b>Who it's for, and why now</b></div>
+  <h2>The people who must judge whether a reported number is plausible.</h2>
+  <div class="grid2">
+    <div>
+      <ul class="clean">
+        <li><b>ESG and credit analysts</b> signing off on issuers' emissions disclosures.</li>
+        <li><b>Regulators and state agencies</b> prioritising inspections.</li>
+        <li><b>Investigative journalists and NGOs</b> who need evidence, not anecdotes.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Why now</h3>
+      <ul class="clean">
+        <li>California <b>SB 253</b>: first Scope 1 and 2 reports due <b>10 Nov 2026</b>, with no assurance requirement yet.</li>
+        <li>EPA has <b>delayed RY2025 GHGRP reporting</b> and proposed ending most of the program. Independent checks matter more.</li>
+        <li>Satellite methane data is now <b>public and frequent</b> (Carbon Mapper Tanager).</li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot"><span>SkyLedger</span><span>Users</span></div>
+</section>
+
+<!-- 4. Solution -->
+<section class="slide">
+  <div class="kicker">03 · <b>The solution</b></div>
+  <h2>Every plume becomes a traced, signed-off dossier.</h2>
+  <div class="grid4">
+    <div class="card"><h3 class="cy">Find</h3><p>Federated geo-join of plumes to reporting facilities, queried in place through Zetaris.</p></div>
+    <div class="card"><h3 class="accent">Attribute</h3><p>Wind and plume geometry decide which facility sits at the plume's head. Nemotron reads the image as a check.</p></div>
+    <div class="card"><h3 class="gr">Reconcile</h3><p>kg/h → tonnes per year, always as a range, against the facility's report and its parent companies.</p></div>
+    <div class="card"><h3 class="mag">Challenge</h3><p>A Skeptic must rule out five rival explanations before anything is written. An analyst signs before it can be shared.</p></div>
+  </div>
+  <p class="lead" style="margin-top: 44px">Output: draft dossiers with ranges, evidence (SQL, image, computation), a parent-company roll-up, and a hash-chained trace of every agent step. Wording is guarded: “inconsistent with available data”, never an accusation.</p>
+  <div class="foot"><span>SkyLedger</span><span>Solution</span></div>
+</section>
+
+<!-- 5. Architecture -->
+<section class="slide">
+  <div class="kicker">04 · <b>Agent workflow</b></div>
+  <h2>Eight agents. One shared state. A Skeptic with veto power.</h2>
+  <div class="flow">
+    <div class="node">SourceMapper<small>what's reachable</small></div><span class="arrow">→</span>
+    <div class="node">GeoLinker<small>Zetaris geo-join</small></div><span class="arrow">→</span>
+    <div class="node">PlumeReader<small>wind + Nemotron vision</small></div><span class="arrow">→</span>
+    <div class="node">OwnershipResolver<small>Meterless World Model</small></div><span class="arrow">→</span>
+    <div class="node">Reconciler<small>units, time window</small></div>
+  </div>
+  <div class="flow">
+    <div class="node sk">Skeptic<small>5 rival tests · can block or send back</small></div><span class="arrow">→</span>
+    <div class="node">Reporter<small>Nemotron via Nightshift + number guard</small></div><span class="arrow">→</span>
+    <div class="node">SignOff<small>signed execution contract</small></div>
+  </div>
+  <div class="grid3" style="margin-top: 26px">
+    <div class="card"><h3 class="mag">Not a linear chain</h3><p>The Skeptic sends work back: widen the search (GeoLinker), look again (PlumeReader), stop annualising (Reconciler). Loops are bounded by config.</p></div>
+    <div class="card"><h3 class="cy">Numbers come from code</h3><p>Distances, unit conversion and ratios come from SQL and code. Models interpret and word; a guard rejects any number the code didn't compute.</p></div>
+    <div class="card"><h3 class="gr">Traceable</h3><p>Every step goes to <span class="mono">logs/trace-&lt;run&gt;.jsonl</span>, hash-chained so any edit breaks the chain, and streams live to the console.</p></div>
+  </div>
+  <div class="foot"><span>SkyLedger</span><span>Architecture</span></div>
+</section>
+
+<!-- 6. Skeptic -->
+<section class="slide">
+  <div class="kicker">05 · <b>The Skeptic</b></div>
+  <h2>Before a word is written, five rival explanations must fall.</h2>
+  <table style="max-width: 1500px">
+    <tr><th>Rival</th><th>The question</th><th>How it's tested (data, never opinion)</th></tr>
+    <tr><td>R1 Misattribution</td><td>Could another facility be the source?</td><td>Plume head vs. candidate distance and wind; basin-level operators nearby are flagged</td></tr>
+    <tr><td>R2 Intermittency</td><td>A one-off release?</td><td>Sightings inside the reporting-year window; fewer than 2 blocks any annual figure</td></tr>
+    <tr><td>R3 Not a reporter</td><td>Is the site required to report?</td><td>Subparts filed, CH₄ reported, or no reporter at the plume head</td></tr>
+    <tr><td>R4 Coverage</td><td>Does the report cover this equipment?</td><td>Basin-aggregate reports (W-ONSH/W-GB) and Subpart W coverage</td></tr>
+    <tr><td>R5 Data quality</td><td>Is the measurement usable?</td><td>Rate present, uncertainty below the configured limit, wind present</td></tr>
+  </table>
+  <div class="foot"><span>SkyLedger</span><span>Skeptic</span></div>
+</section>
+
+<!-- 7. Evidence (numbers from /api/stats) -->
+<section class="slide">
+  <div class="kicker">06 · <b>What it finds</b> <span id="ev-scope" class="small"></span></div>
+  <h2>Fewer flags. Better ones.</h2>
+  <div class="grid4">
+    <div class="card"><div class="num" data-k="data.sources">—</div><p>satellite methane sources in the scan area</p></div>
+    <div class="card"><div class="num" data-k="run.plumes">—</div><p>plumes analysed end to end by the agents</p></div>
+    <div class="card"><div class="num accent" data-k="run.summary.unreported_source">—</div><p>plumes with no reporting facility at the plume head</p></div>
+    <div class="card"><div class="num cy" data-k="eval.label_free.nearest_blames_over_1km">—</div><p>cases where nearest-facility matching blames a plant more than 1 km away</p></div>
+  </div>
+  <div class="card" style="margin-top: 28px; display: flex; align-items: center; gap: 60px">
+    <div><div class="num" style="color: var(--muted)" data-k="eval.label_free.naive_discrepancy_flags">—</div><p>discrepancies a naive baseline would flag</p></div>
+    <div class="arrow" style="font-size: 60px">→</div>
+    <div><div class="num mag" data-k="eval.label_free.skyledger_discrepancy_flags">—</div><p>still standing after the Skeptic</p></div>
+    <div style="flex: 1"><p class="small">Label-free diagnostics from the reproducible sample run. A hand-labelled accuracy table is built from the console's labelling tool.</p></div>
+  </div>
+  <div class="foot"><span>SkyLedger</span><span>Evidence</span></div>
+</section>
+
+<!-- 8. Product visuals -->
+<section class="slide" style="padding-top: 80px">
+  <div class="kicker">07 · <b>The product</b></div>
+  <div class="grid2" style="grid-template-columns: 1.35fr 1fr; align-items: start">
+    <div><img class="shot" src="/deck/img/console.png" alt="Analyst console"><p class="small" style="margin-top: 14px">Analyst console: live engine status, streaming agent trace, basin map, plain-language dossier, sign-off.</p></div>
+    <div><img class="shot" src="/deck/img/landing-plume.png" alt="Landing page"><p class="small" style="margin-top: 14px">Landing page: the real plume and facility data in WebGL, following one plume through the agents.</p>
+      <img class="shot" style="margin-top: 22px" src="/deck/img/landing-evidence.png" alt="Evidence"></div>
+  </div>
+  <div class="foot"><span>SkyLedger</span><span>Product</span></div>
+</section>
+
+<!-- 9. Tech stack -->
+<section class="slide">
+  <div class="kicker">08 · <b>Technical stack</b></div>
+  <h2>Small, reproducible, honest about what's live.</h2>
+  <div class="grid2">
+    <ul class="clean">
+      <li><b>TypeScript on Node 22</b>, run with tsx. No build step.</li>
+      <li><b>HTTP API:</b> <span class="mono">POST /run</span>, live streaming over server-sent events, signed sign-off.</li>
+      <li><b>Front end:</b> vanilla JS, three.js, GSAP, Lenis, served locally. No CDN.</li>
+      <li><b>Docker:</b> builds and runs from a clean clone with no keys, no network and no GPU.</li>
+    </ul>
+    <ul class="clean">
+      <li><b>Config, not constants:</b> every threshold in <span class="mono">config/skyledger.json</span>, every region in <span class="mono">config/regions/</span>.</li>
+      <li><b>Providers:</b> <span class="mono">AI_PROVIDER=nightshift | nvidia | none</span>.</li>
+      <li><b>Sample mode:</b> cached public data (Carbon Mapper, EPA GHGRP RY2023) and deterministic agents. Identical results every run.</li>
+      <li><b>Data:</b> Carbon Mapper (non-commercial terms), US EPA GHGRP, SEC EDGAR.</li>
+    </ul>
+  </div>
+  <div class="foot"><span>SkyLedger</span><span>Stack</span></div>
+</section>
+
+<!-- 10. Sponsor tech -->
+<section class="slide">
+  <div class="kicker">09 · <b>How we used the sponsor technology</b></div>
+  <table>
+    <tr><th>Sponsor</th><th>Role in SkyLedger</th><th>Proof</th></tr>
+    <tr><td class="cy">Zetaris</td><td>The federated geo-join: Carbon Mapper sources × GHGRP facilities × CH₄ totals, queried in place over the REST SQL API from three Lightning filestore tables</td><td>Live result identical to the cache for 60/60 plumes; SQL and row hash in every dossier</td></tr>
+    <tr><td class="accent">Meterless Nightshift</td><td>Primary AI provider, built to the official provider contract (headers, discovery, token handling, Auto Detect)</td><td>Provider done-criteria pass; Nemotron replies with receipts</td></tr>
+    <tr><td class="accent">Meterless World Model</td><td>Facility → owner → parent graph: merges messy owner strings, provenance on every write, review queue</td><td>Conformance suite 8/8 against the engine we run</td></tr>
+    <tr><td class="accent">Meterless Scout Intent</td><td>Analyst sign-off issues an execution contract in Scout's shape (HMAC over canonical JSON)</td><td>Contract binds the dossier hash and the trace head</td></tr>
+    <tr><td class="gr">NVIDIA Nemotron</td><td>3.5 Lightning writes each dossier via Nightshift; 3.5 Super VL reads each plume image blind</td><td>Vision measured honestly and kept advisory (below)</td></tr>
+    <tr><td>Cursor</td><td colspan="2">Development environment (see CURSOR.md)</td></tr>
+  </table>
+  <div class="foot"><span>SkyLedger</span><span>Sponsor technology</span></div>
+</section>
+
+<!-- 11. Unique + honesty -->
+<section class="slide">
+  <div class="kicker">10 · <b>What's unique, and what we measured</b></div>
+  <div class="grid2">
+    <div>
+      <h3 class="accent">Unique</h3>
+      <ul class="clean">
+        <li><b>Data never leaves its source:</b> Zetaris joins satellite and regulatory data in place, and the same SQL is shown to the analyst.</li>
+        <li><b>A World Model for corporate ownership:</b> owner strings resolved into parents with provenance, the gap Zetaris's own docs name.</li>
+        <li><b>Agents that check agents:</b> the Skeptic blocks and sends work back, and the trace proves it.</li>
+        <li><b>Real data as the interface:</b> every number on the landing page and in the deck comes from the API.</li>
+      </ul>
+    </div>
+    <div>
+      <h3 class="mag">Measured, not claimed</h3>
+      <ul class="clean">
+        <li><b>Vision:</b> blind Nemotron headings agreed with the wind on 24 of 64 live readings (38%, about 33% by chance) on 114-pixel quicklooks. So vision is advisory: it can add confidence, never downgrade a case alone.</li>
+        <li><b>Route disclosure:</b> Nightshift 1.2.7 refuses image requests to Nemotron VL. PlumeReader tries Nightshift first, then calls NVIDIA directly, logging each fallback. Reported to Meterless.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot"><span>SkyLedger</span><span>Unique</span></div>
+</section>
+
+<!-- 12. Future -->
+<section class="slide">
+  <div class="kicker">11 · <b>Future enhancements</b></div>
+  <h2>From a basin to a monitoring service.</h2>
+  <div class="grid3">
+    <div class="card"><h3 class="cy">Coverage</h3><p>Every US basin and every reporting year; scheduled refresh from Carbon Mapper and EPA; SEC CIK links for parents.</p></div>
+    <div class="card"><h3 class="accent">Accuracy</h3><p>A published labelled test set and accuracy report; vision on larger scenes or as a data-quality check; H-MEM to learn attribution rules from analyst decisions.</p></div>
+    <div class="card"><h3 class="gr">Product</h3><p>Hosted service with logins and audit trails; alerts when a facility's gap persists; export of signed dossiers for disclosure reviews.</p></div>
+  </div>
+  <p class="lead" style="margin-top: 44px">Commercial use needs a data agreement with Carbon Mapper, and a legal review of wording that names companies. Both are part of the plan.</p>
+  <div class="foot"><span>SkyLedger</span><span>Future</span></div>
+</section>
+
+<script type="module">
+// Numbers come from the same API as the product; nothing on the evidence slide is typed in.
+const get = (o, path) => path.split(".").reduce((x, k) => (x == null ? x : x[k]), o);
+try {
+  const s = await (await fetch("/api/stats")).json();
+  for (const el of document.querySelectorAll("[data-k]")) {
+    const v = get(s, el.dataset.k);
+    if (v == null) { el.closest(".card")?.classList.add("missing"); continue; }
+    el.textContent = Number(v).toLocaleString("en-US");
+  }
+  document.getElementById("ev-scope").textContent = `· run ${s.run?.run_id ?? ""}, ${s.data?.region ?? ""}, GHGRP RY${s.data?.ghgrp_year ?? ""}`;
+} catch { document.querySelectorAll("[data-k]").forEach((el) => el.closest(".card")?.classList.add("missing")); }
+// On screen, scale slides to the window width.
+const fit = () => { const k = Math.min(1, (innerWidth - 48) / 1920); document.querySelectorAll(".slide").forEach((s) => { s.style.transform = `scale(${k})`; s.style.marginBottom = `${-1080 * (1 - k)}px`; }); };
+if (!matchMedia("print").matches) { fit(); addEventListener("resize", fit); }
+window.__deckReady = true;
+</script>
+</body>
+</html>
