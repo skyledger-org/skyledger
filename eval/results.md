@@ -1,6 +1,6 @@
 # Eval results
 
-Generated 2026-10-26T00:45:51.581Z from `npm run eval` (sample data, 60 Permian plumes, GHGRP RY2023).
+Generated 2026-10-27T00:19:58.109Z from `npm run eval` (sample data, 60 plumes, Permian Basin (TX/NM), GHGRP RY2023).
 
 ## Against hand labels (`eval/labels.csv`)
 
@@ -8,5 +8,5 @@ Generated 2026-10-26T00:45:51.581Z from `npm run eval` (sample data, 60 Permian 
 
 ## Label-free diagnostic (not a substitute for labels)
 
-- Nearest-facility matching names a facility **more than 1 km from the plume head** in **19 of 60** plumes. Carbon Mapper places the plume coordinate at the estimated emission origin, so those attributions are physically implausible.
+- Nearest-facility matching names a facility **more than 1000 m from the plume head** in **18 of 60** plumes. Carbon Mapper places the plume coordinate at the estimated emission origin, so those attributions are physically implausible.
 - Naive annualization (all-time persistence, no time window, no rival tests) flags **34** discrepancies; SkyLedger flags **8** after the Skeptic.
