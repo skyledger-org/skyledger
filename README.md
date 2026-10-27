@@ -230,3 +230,8 @@ scripts/         cache_data.ts, export_zetaris_csv.ts, verify_trace.ts
 input_examples/  output_examples/  logs/
 run.ts  Dockerfile  metadata.json  .env.example
 ```
+
+## Team
+
+- **Kaustubh Pardeshi**: [@Kaustubh-404](https://github.com/Kaustubh-404)
+- **Atharva Waghachoure**: [@AtharvaWaghchoure](https://github.com/AtharvaWaghchoure)

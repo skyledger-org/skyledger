@@ -50,4 +50,9 @@ Track 1: Solving Fragmented Intelligence
 - Planning documents (spec, research, handoff) were written from 2026-10-21 to 24. **All product code was written during the build window (22–27 Oct 2026).**
 
 ## Team
-*(Confirm: names, HackOS emails, GitHub usernames, roles, primary contact.)*
+| Name | GitHub | HackOS email | Role |
+|---|---|---|---|
+| Kaustubh Pardeshi | [Kaustubh-404](https://github.com/Kaustubh-404) | *(fill in)* | *(fill in)* |
+| Atharva Waghachoure | [AtharvaWaghchoure](https://github.com/AtharvaWaghchoure) | *(fill in)* | *(fill in)* |
+
+Primary contact: *(fill in)*. Both members must be on the HackOS team **before** the first submission, because the team locks then.

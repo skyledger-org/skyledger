@@ -3,6 +3,16 @@
   "track": "Track 1: Solving Fragmented Intelligence",
   "tagline": "Satellites see the leaks. Companies report the numbers. An agent team checks one against the other.",
   "repository": "https://github.com/skyledger-org/skyledger",
+  "team": [
+    {
+      "name": "Kaustubh Pardeshi",
+      "github": "Kaustubh-404"
+    },
+    {
+      "name": "Atharva Waghachoure",
+      "github": "AtharvaWaghchoure"
+    }
+  ],
   "entry_points": {
     "http": "POST /run on 0.0.0.0:8000 (run.ts)",
     "cli": "npx tsx run.ts --once input_examples/example_1.json",
