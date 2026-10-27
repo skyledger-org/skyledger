@@ -3,7 +3,9 @@
 // nothing on the landing page is typed in by hand.
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { ROOT } from "./config.ts";
+import { ROOT, config, hasMeterless, hasZetaris, hasNvidiaDirect, listRegions } from "./config.ts";
+import { discover } from "./adapters/meterless.ts";
+import { zetarisSql } from "./adapters/zetaris.ts";
 import { sampleData } from "./adapters/sample_data.ts";
 
 const BASIN = /W-ONSH|W-GB|W-OFFS/;
@@ -77,4 +79,40 @@ export function statsPayload() {
       candidates: featured.candidates.slice(0, 4).map((k: any) => ({ name: k.facility_name, dist_m: k.dist_m, kind: k.kind })),
     },
   };
+}
+
+// ---- Engine status for the console's status bar (cached briefly; never returns secrets) ----
+
+type Engine = { id: string; name: string; role: string; state: "live" | "configured" | "offline" | "not_configured"; detail: string };
+let statusCache: { at: number; body: unknown } | null = null;
+
+export async function statusPayload() {
+  if (statusCache && Date.now() - statusCache.at < 10_000) return statusCache.body;
+  const engines: Engine[] = [];
+  const t = (p: Promise<any>, ms: number) => Promise.race([p, new Promise((_, rej) => setTimeout(() => rej(new Error("timeout")), ms))]);
+
+  if (!hasZetaris()) engines.push({ id: "zetaris", name: "Zetaris", role: "Federated SQL across the sources", state: "not_configured", detail: "ZETARIS_API_KEY not set; queries use the cached sample" });
+  else {
+    try { await t(zetarisSql("SELECT 1", 1), 4000); engines.push({ id: "zetaris", name: "Zetaris", role: "Federated SQL across the sources", state: "live", detail: `REST at ${config.zetaris.restUrl}` }); }
+    catch (e) { engines.push({ id: "zetaris", name: "Zetaris", role: "Federated SQL across the sources", state: "offline", detail: `unreachable (${(e as Error).message.slice(0, 60)}); queries use the cached sample` }); }
+  }
+  if (!hasMeterless()) engines.push({ id: "nightshift", name: "Meterless Nightshift", role: "AI provider", state: "not_configured", detail: "METERLESS_RUNTIME_TOKEN not set" });
+  else {
+    const d = await t(discover(), 4000).catch(() => ({ status: "offline", models: [] }));
+    engines.push({ id: "nightshift", name: "Meterless Nightshift", role: "AI provider", state: d.status === "online" ? "live" : "offline", detail: d.status === "online" ? `${d.models.length} models at ${config.meterless.baseUrl}` : `status ${d.status}` });
+  }
+  engines.push({ id: "nvidia", name: "NVIDIA Nemotron", role: config.provider === "nvidia" ? "AI provider" : "Vision fallback", state: hasNvidiaDirect() ? "configured" : "not_configured", detail: hasNvidiaDirect() ? `${config.nvidia.visionModel} / ${config.nvidia.textModel}` : "NVIDIA_API_KEY not set" });
+  engines.push({ id: "world_model", name: "Meterless World Model", role: "Ownership entity graph", state: "live", detail: "in-process reference engine (8/8 conformance)" });
+
+  const body = {
+    provider: config.provider,
+    sample_mode_default: config.sampleMode,
+    live_available: engines.some((e) => e.id === "zetaris" && e.state === "live") || (config.provider === "nightshift" ? engines.some((e) => e.id === "nightshift" && e.state === "live") : config.provider === "nvidia" && hasNvidiaDirect()),
+    limits: { max_plumes: config.settings.run.max_plumes, live_max_plumes: config.settings.run.live_max_plumes, default_max_plumes: config.settings.run.default_max_plumes },
+    regions: listRegions().map((r) => ({ id: r.id, name: r.name, years: r.reporting_years_available, default_year: r.reporting_year })),
+    default_region: config.region.id,
+    engines,
+  };
+  statusCache = { at: Date.now(), body };
+  return body;
 }

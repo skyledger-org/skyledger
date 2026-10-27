@@ -9,7 +9,9 @@ import { config, DATA_DIR, LOG_DIR, ROOT } from "./app/config.ts";
 import { run } from "./app/orchestrator.ts";
 import { issueContract, verifyContract } from "./app/agents/signoff.ts";
 import { verifyTrace, Tracer } from "./app/tracing.ts";
-import { geoPayload, statsPayload } from "./app/public_api.ts";
+import { geoPayload, statsPayload, statusPayload } from "./app/public_api.ts";
+
+let activeRun: string | null = null;
 
 const LABELS_FILE = join(ROOT, "eval", "labels.csv");
 function readLabels(): Record<string, { label: string; labeled_at: string }> {
@@ -82,6 +84,45 @@ async function handle(req: IncomingMessage, res: ServerResponse) {
     if (req.method === "GET" && path.startsWith("/images/")) return serveFile(res, join(DATA_DIR, "images"), path.slice(8), true);
     if (req.method === "GET" && path === "/api/geo") return send(res, 200, geoPayload());
     if (req.method === "GET" && path === "/api/stats") return send(res, 200, statsPayload());
+    if (req.method === "GET" && path === "/api/status") return send(res, 200, await statusPayload());
+    if (req.method === "GET" && path === "/api/examples") {
+      const dir = join(ROOT, "input_examples");
+      const files = existsSync(dir) ? readdirSync(dir).filter((f) => f.endsWith(".json")).sort() : [];
+      return send(res, 200, files.map((f) => { const j = JSON.parse(readFileSync(join(dir, f), "utf8")); return { id: f.replace(/\.json$/, ""), question: j.input?.question ?? f, input: j.input ?? {} }; }));
+    }
+
+    // Streaming run for the console: server-sent events with every trace line as it is written, progress, then
+    // the run id. One run at a time per server, so a burst of clicks can't stack live model calls.
+    if (req.method === "GET" && path === "/api/run/stream") {
+      if (activeRun) return err(res, 429, "busy", `run ${activeRun} is still in progress`);
+      const q = url.searchParams;
+      const input: Record<string, unknown> = {};
+      if (q.get("region")) input.region = q.get("region");
+      if (q.get("year")) input.year = Number(q.get("year"));
+      if (q.get("max_plumes")) input.max_plumes = Number(q.get("max_plumes"));
+      if (q.get("plume_ids")) input.plume_ids = q.get("plume_ids")!.split(",").filter(safeId);
+      if (q.get("question")) input.question = q.get("question")!.slice(0, 300);
+      const runId = newRunId();
+      activeRun = runId;
+      res.writeHead(200, { "Content-Type": "text/event-stream", "Cache-Control": "no-store", Connection: "keep-alive" });
+      const sse = (event: string, data: unknown) => res.write(`event: ${event}\ndata: ${JSON.stringify(data)}\n\n`);
+      sse("start", { run_id: runId });
+      try {
+        const result = await run(runId, input, {
+          sample_mode: q.get("sample_mode") !== "false",
+          echo: false,
+          onTrace: (line) => sse("trace", line),
+          onProgress: (p) => sse("progress", p),
+        });
+        sse("done", { run_id: result.run_id, summary: result.output.summary, seconds: result.execution_time_seconds });
+      } catch (e) {
+        sse("error", { message: (e as Error).message });
+      } finally {
+        activeRun = null;
+        res.end();
+      }
+      return;
+    }
 
     if (req.method === "POST" && path === "/run") {
       const body = await readBody(req);
@@ -92,8 +133,14 @@ async function handle(req: IncomingMessage, res: ServerResponse) {
     }
 
     if (req.method === "GET" && path === "/api/runs") {
-      const runs = existsSync(LOG_DIR) ? readdirSync(LOG_DIR).filter((f) => f.startsWith("run-") && f.endsWith(".json")).sort().reverse() : [];
-      return send(res, 200, runs.map((f) => f.slice(4, -5)));
+      const files = existsSync(LOG_DIR) ? readdirSync(LOG_DIR).filter((f) => f.startsWith("run-") && f.endsWith(".json")) : [];
+      const runs = files.map((f) => {
+        try {
+          const r = JSON.parse(readFileSync(join(LOG_DIR, f), "utf8"));
+          return { id: r.run_id, created: statSync(join(LOG_DIR, f)).mtime.toISOString(), plumes: r.output?.dossiers?.length ?? 0, summary: r.output?.summary ?? {}, sql_live: r.sql_live, models_live: r.models_live, seconds: r.execution_time_seconds, region: r.input?.region ?? null, year: r.input?.year ?? null };
+        } catch { return null; }
+      }).filter(Boolean).sort((a: any, b: any) => b.created.localeCompare(a.created)).slice(0, 50);
+      return send(res, 200, runs);
     }
     const m = path.match(/^\/api\/runs\/([A-Za-z0-9_.-]+)(\/trace|\/verify)?$/);
     if (req.method === "GET" && m) {
