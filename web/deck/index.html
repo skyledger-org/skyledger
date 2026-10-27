@@ -68,6 +68,11 @@ ul.list li b { color: var(--ink); }
 .future .card { display:flex; flex-direction:column; gap: 18px; padding: 40px 42px; }
 .future .card h3 { font-size: 44px; }
 .future .card p { font-size: 32px; line-height: 1.42; }
+@media print {
+  html, body { background: var(--bg); }
+  body { display: block !important; padding: 0 !important; margin: 0 !important; }
+  .slide { transform: none !important; margin: 0 !important; }
+}
 </style>
 </head>
 <body>
