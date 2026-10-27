@@ -20,7 +20,9 @@ From `output_examples/example_1.json`:
 | Attribution uncertain | 8 | Two plausible sources, or the geometry is inconclusive. Excluded from the roll-up |
 | Coverage gap | 3 | The plume falls under basin-level reporting, or the facility doesn't report Subpart W |
 
-Label-free diagnostic from `npm run eval`: nearest-facility matching names a facility **more than 1 km from the plume head in 18 of 60 plumes**. Naive annualization flags **34** discrepancies; SkyLedger flags **8** after the Skeptic. The hand-labelled accuracy table is in `eval/results.md` once labels exist (see [Eval](#eval)).
+Label-free diagnostic from `npm run eval`: nearest-facility matching names a facility **more than 1 km from the plume head in 18 of 60 plumes**. Naive annualization flags **34** discrepancies; SkyLedger flags **8** after the Skeptic.
+
+Against **15 hand-labelled plumes** (5 more marked unsure and left out), the wrong facility was blamed in **33%** of cases by nearest-facility matching, **47%** by a single LLM call and **7%** by SkyLedger, which also raised **no false discrepancy flags** (nearest-facility: 1). This is a small sanity check labelled by the team, not expert ground truth; see [Eval](#eval) for the caveats.
 
 ## Quick start (no credentials, no network, no GPU)
 
@@ -153,12 +155,26 @@ Each run writes `logs/trace-<run_id>.jsonl` (one JSON object per line, also prin
 
 ## Eval
 
-`npm run eval` reruns all 60 plumes and scores three systems against hand labels in `eval/labels.csv`, which come from the "Your label" buttons in each dossier:
+`npm run eval` reruns all 60 plumes and scores three systems against hand labels in `eval/labels.csv`, made on the labelling page (`/label`). That page shows one plume at a time with its satellite picture and nearby facilities, and never SkyLedger's answers:
 - **Baseline A:** nearest oil and gas facility within 2 km, with naive annualization
 - **Baseline B:** a single LLM call with the same facts and no Skeptic (runs only when Nightshift is online)
 - **SkyLedger**
 
 Metrics are attribution accuracy, wrong facility blamed, abstentions and false discrepancy flags. Results go to `eval/results.md`.
+
+Current result (15 labelled plumes, 5 more marked unsure and excluded):
+
+| System | Attribution accuracy | Wrong facility blamed | Abstained | Discrepancy flags | False flags |
+|---|---|---|---|---|---|
+| Nearest facility ≤ 2 km | 67% | 33% | 0% | 7 | 1 |
+| Single LLM, no Skeptic | 53% | 47% | 0% | 0 | 0 |
+| **SkyLedger** | **73%** | **7%** | 7% | 4 | **0** |
+
+How to read it honestly:
+- **Small and not expert.** 15 plumes, labelled by the team, not by remote-sensing specialists.
+- **Not fully independent.** The labelling page shows each facility's distance from the plume origin, and SkyLedger uses distance too, so agreement is partly expected. The clearer signal is the gap to the baselines, which see the same distances.
+- **Baseline B varies.** It is a live model call (40% and 53% accuracy on two runs of the same labels).
+- **Where SkyLedger and the labels disagree:** one plant 72 m from the origin that SkyLedger attributes but the labeller rejected from the image, two plants 1.1–1.2 km away that the labeller picked and SkyLedger left as "no reporter at the source", and one SkyLedger abstention.
 
 ## Examples
 
@@ -205,7 +221,8 @@ app/
   engines/       world_model.ts (wraps the vendored Meterless World Model)
   orchestrator.ts  state.ts  tracing.ts  config.ts  geo.ts
 web/landing/     landing page (/): a 3D view of the real plume and facility data, and the story of one plume
-web/app/         analyst console (/app): engine status, live streaming runs, basin map, dossier, trace, sign-off, labelling
+web/app/         analyst console (/app): engine status, live streaming runs, basin map, dossier, trace, sign-off
+web/label/       labelling page (/label): one plume at a time, builds eval/labels.csv without showing SkyLedger's answers
 config/          skyledger.json (thresholds, models, limits) and regions/<id>.json
 data/sample/     cached public data + images (data/README.md)
 eval/            run_eval.ts, labels.csv, results.md

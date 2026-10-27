@@ -292,7 +292,9 @@ function buildEvidence(stats) {
   const ev = stats && stats.eval;
   if (ev && isNum(ev.labelled)) {
     $("#labelNote").textContent = ev.labelled > 0
-      ? `Hand-labelled accuracy is reported on ${fmt(ev.labelled)} plumes in eval/results.md in the repository.`
+      ? (ev.skyledger && ev.baseline_a
+        ? `On ${fmt(ev.labelled)} hand-labelled plumes, nearest-facility matching blamed the wrong facility ${fmt(ev.baseline_a.wrong_blame_pct)}% of the time; SkyLedger ${fmt(ev.skyledger.wrong_blame_pct)}%. A small sanity check labelled by the team, not expert ground truth (eval/results.md).`
+        : `Hand-labelled results are in eval/results.md in the repository.`)
       : "These are label-free diagnostics. A hand-labelled accuracy table has not been published yet.";
     group("labels", true);
   } else group("labels", false);

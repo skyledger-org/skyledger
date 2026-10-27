@@ -169,7 +169,11 @@ td:first-child { color: var(--ink); font-weight: 600; white-space: nowrap; }
     <div><div class="num" style="color: var(--muted)" data-k="eval.label_free.naive_discrepancy_flags">—</div><p>discrepancies a naive baseline would flag</p></div>
     <div class="arrow" style="font-size: 60px">→</div>
     <div><div class="num mag" data-k="eval.label_free.skyledger_discrepancy_flags">—</div><p>still standing after the Skeptic</p></div>
-    <div style="flex: 1"><p class="small">Label-free diagnostics from the reproducible sample run. A hand-labelled accuracy table is built from the console's labelling tool.</p></div>
+    <div style="flex: 1">
+      <p class="small" style="margin: 0 0 10px">Wrong facility blamed, on <b data-k="eval.labelled">—</b> hand-labelled plumes:</p>
+      <p style="margin: 0; font-size: 26px; line-height: 1.5">Nearest facility <b data-k="eval.baseline_a.wrong_blame_pct">—</b>% · Single LLM <b data-k="eval.baseline_b.wrong_blame_pct">—</b>% · <b class="mag">SkyLedger <span data-k="eval.skyledger.wrong_blame_pct">—</span>%</b></p>
+      <p class="small" style="margin: 10px 0 0">A small sanity check labelled by the team, not expert ground truth. Details in eval/results.md.</p>
+    </div>
   </div>
   <div class="foot"><span>SkyLedger</span><span>Evidence</span></div>
 </section>

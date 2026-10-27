@@ -57,7 +57,7 @@ export function statsPayload() {
       ghgrp_year: d.manifest.ghgrp_year ?? null,
     },
     run: run ? { run_id: run.run_id, plumes: dossiers.length, summary: run.output.summary, seconds: run.execution_time_seconds, sql_live: run.sql_live, models_live: run.models_live } : null,
-    eval: evalRes ? { label_free: evalRes.label_free, labelled: evalRes.labelled, baseline_a: evalRes.baseline_a, skyledger: evalRes.skyledger } : null,
+    eval: evalRes ? { label_free: evalRes.label_free, labelled: evalRes.labelled, ambiguous: evalRes.ambiguous, baseline_a: evalRes.baseline_a, baseline_b: evalRes.baseline_b, skyledger: evalRes.skyledger } : null,
     agents: run?.agents ?? [],
     featured: featured && {
       plume_id: featured.plume.plume_id,

@@ -1,10 +1,20 @@
 # Eval results
 
-Generated 2026-10-27T00:19:58.109Z from `npm run eval` (sample data, 60 plumes, Permian Basin (TX/NM), GHGRP RY2023).
+Generated 2026-10-27T10:09:59.687Z from `npm run eval` (sample data, 60 plumes, Permian Basin (TX/NM), GHGRP RY2023).
 
 ## Against hand labels (`eval/labels.csv`)
 
-**No labels yet.** Label plumes in the UI ("Your label" in each dossier), then rerun `npm run eval`.
+15 labelled plumes (5 more marked ambiguous and excluded).
+
+| System | n | Attribution accuracy | Wrong facility blamed | Abstained | Discrepancy flags | False flags |
+|---|---|---|---|---|---|---|
+| Baseline A: nearest facility ≤ 2000 m | 15 | 67% | 33% | 0% | 7 | 1 |
+| Baseline B: single LLM, no Skeptic | 15 | 53% | 47% | 0% | 0 | 0 |
+| SkyLedger agent team | 15 | 73% | 7% | 7% | 4 | 0 |
+
+A false flag is a reported discrepancy against a facility the labeller says is not the source.
+
+**Read with care.** This is a small sanity check, not expert ground truth: the labels come from the team on the `/label` page, which hides SkyLedger's answers but shows each facility's distance from the plume origin, a cue SkyLedger also uses. Baseline B is a live model call, so its row can vary between runs.
 
 ## Label-free diagnostic (not a substitute for labels)
 

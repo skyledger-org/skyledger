@@ -1,15 +1,36 @@
 {
- "generated_at": "2026-10-27T00:19:58.109Z",
+ "generated_at": "2026-10-27T10:09:59.687Z",
  "plumes": 60,
- "labelled": 0,
- "ambiguous": 0,
+ "labelled": 15,
+ "ambiguous": 5,
  "label_free": {
   "nearest_blames_over_1km": 18,
   "naive_discrepancy_flags": 34,
   "skyledger_discrepancy_flags": 8
  },
- "baseline_a": null,
- "baseline_b": null,
- "skyledger": null,
- "seconds": 0.4
+ "baseline_a": {
+  "n": 15,
+  "accuracy_pct": 67,
+  "wrong_blame_pct": 33,
+  "abstain_pct": 0,
+  "flags": 7,
+  "false_flags": 1
+ },
+ "baseline_b": {
+  "n": 15,
+  "accuracy_pct": 53,
+  "wrong_blame_pct": 47,
+  "abstain_pct": 0,
+  "flags": 0,
+  "false_flags": 0
+ },
+ "skyledger": {
+  "n": 15,
+  "accuracy_pct": 73,
+  "wrong_blame_pct": 7,
+  "abstain_pct": 7,
+  "flags": 4,
+  "false_flags": 0
+ },
+ "seconds": 35.9
 }

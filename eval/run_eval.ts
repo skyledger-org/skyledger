@@ -1,5 +1,5 @@
 // Eval: SkyLedger vs baselines on hand-labelled plume -> facility attributions (eval/labels.csv,
-// written by the labelling buttons in the UI). Labels: <GHGRP facility_id> | none | ambiguous.
+// written by the labelling page at /label, which never shows SkyLedger's answers). Labels: <GHGRP facility_id> | none | ambiguous.
 //   Baseline A: nearest oil & gas GHGRP facility within 2 km; flags a discrepancy if the naive
 //               all-time annualization exceeds its report (no Skeptic, no wind, no time window).
 //   Baseline B: one LLM call per plume with the same facts, no image, no Skeptic (only when Nightshift is live).
@@ -105,7 +105,9 @@ ${row(`Baseline A: nearest facility ≤ ${config.settings.attribution.rival_radi
 ${row("Baseline B: single LLM, no Skeptic", res.baseline_b)}
 ${row("SkyLedger agent team", res.skyledger)}
 
-A false flag is a reported discrepancy against a facility the labeller says is not the source.` : "**No labels yet.** Label plumes in the UI (\"Your label\" in each dossier), then rerun `npm run eval`."}
+A false flag is a reported discrepancy against a facility the labeller says is not the source.
+
+**Read with care.** This is a small sanity check, not expert ground truth: the labels come from the team on the \`/label\` page, which hides SkyLedger's answers but shows each facility's distance from the plume origin, a cue SkyLedger also uses. Baseline B is a live model call, so its row can vary between runs.` : "**No labels yet.** Label plumes at `/label`, then rerun `npm run eval`."}
 
 ## Label-free diagnostic (not a substitute for labels)
 
