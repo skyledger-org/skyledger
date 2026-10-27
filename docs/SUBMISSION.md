@@ -28,7 +28,7 @@ Track 1: Solving Fragmented Intelligence
 - **World Model** (the reference engine, unmodified) holds the facility → owner → parent graph. It merges messy owner strings (e.g. "TARGA RESOURCES CORP" and "TARGA RESOURCES"), keeps provenance on every write and a review queue. Its own conformance suite passes 8/8 against the engine we run (`docs/evidence/world-model-conformance.txt`).
 - **Scout Intent's execution-contract format** is used at analyst sign-off: HMAC-SHA256 over canonical JSON, bound to the dossier hash and the trace head.
 
-**Cursor.** The project is developed in Cursor with project rules in `.cursor/rules/`. On 2026-10-27, Cursor's Agent removed a hardcoded threshold: `/api/stats` now exposes the attribution distance from `config/skyledger.json`, and the landing page and deck read it instead of fixed "1 km" text (details and screenshot in `CURSOR.md`).
+**Cursor.** The project is developed in Cursor with project rules in `.cursor/rules/`. Details in `CURSOR.md`.
 
 **NVIDIA.**
 - Nemotron 3.5 Lightning, through Nightshift, writes every dossier from unit-labelled facts. A guard rejects any number the code didn't compute.
